@@ -91,6 +91,47 @@ Copyright (c) Meta Platforms, Inc. and affiliates
 This package ships without a LICENSE file. Its source header says it is
 licensed under the MIT license, and it declares `"license": "MIT"`.
 
+## 4. Leaflet
+
+- Package: `leaflet`
+- Version: `1.9.4`
+- Source: https://www.npmjs.com/package/leaflet/v/1.9.4
+- Licence: BSD-2-Clause
+
+Copyright (c) 2010-2023, Volodymyr Agafonkin
+Copyright (c) 2010-2011, CloudMade
+
+Unlike the packages in section 3, Leaflet is a direct (dev) dependency
+of this app (`leaflet@1.9.4`, exact-pinned), not bundled inside
+bobuttons. Its built `dist/leaflet.js` and `dist/leaflet.css` are
+vendored verbatim as Android assets at
+`android/app/src/main/assets/leaflet/` and loaded by the WebView from
+`file:///android_asset/leaflet/map.html` - see README.md's "Leaflet
+provenance" section for the exact digests and reproduction commands.
+
+### BSD 2-Clause License text
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 ## MIT License text
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

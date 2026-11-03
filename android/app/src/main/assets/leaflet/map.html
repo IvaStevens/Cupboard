@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      user-scalable=no plus maximum-scale=1 stop Android from turning a
+      pinch gesture into a page zoom that would fight Leaflet's own pinch
+      handling (see WEBVIEW SECURITY SETTINGS PINNED / PAN, ZOOM AND
+      GESTURE OWNERSHIP in the ticket).
+    -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <!--
+      Relative references only - no http(s) <script>/<link> tag, so there
+      is no CDN fetch for the Leaflet library. These resolve against this
+      document's file:///android_asset/leaflet/ base URL, which is why
+      this is loaded as a `uri` source and never as `source={{ html }}`
+      (an inline document has no base URL).
+    -->
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <style>
+      /*
+        The actual Android pan fix: a document sized exactly to the
+        viewport, with nothing to scroll, so the WebView never starts a
+        page scroll and Leaflet owns the drag. There is no Android
+        `scrollEnabled` prop to reach for instead - it is iOS/macOS only.
+      */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // One grep-able tag shared by every diagnostic line this feature
+      // logs, so `adb logcat -d | grep CupboardMap` is the single
+      // diagnostic command. Mirrors mapConstants.ts's MAP_LOG_TAG, but a
+      // tag string is not a map parameter (coordinate/zoom/tile
+      // URL/attribution), so it is not subject to the no-duplication
+      // rule those values carry.
+      var TAG = '[CupboardMap]';
+
+      // Guarded so a reporting call can never itself throw - this helper
+      // is used from window.onerror, where a throw would be swallowed
+      // silently by the browser.
+      function post(message) {
+        if (
+          typeof window.ReactNativeWebView !== 'undefined' &&
+          window.ReactNativeWebView &&
+          typeof window.ReactNativeWebView.postMessage === 'function'
+        ) {
+          window.ReactNativeWebView.postMessage(TAG + ' ' + message);
+        }
+      }
+
+      // Bridges in-page errors out via postMessage -> onMessage -> one JS
+      // console.warn, because in-page console.* is swallowed by
+      // RNCWebChromeClient in release builds, while JS-side console
+      // output is not.
+      window.onerror = function (message, source, lineno, colno, error) {
+        post(
+          'window.onerror: ' +
+            message +
+            ' (' +
+            source +
+            ':' +
+            lineno +
+            ':' +
+            colno +
+            ')',
+        );
+        return false;
+      };
+
+      // Layer 1 of the diagnosable failure path: Leaflet failed to load
+      // (e.g. the leaflet.js asset is missing), so `L` never exists.
+      if (typeof L === 'undefined') {
+        post('map.html: L is undefined - leaflet.js did not load');
+      }
+
+      // Called by the WebView's injectedJavaScript (see
+      // src/map/mapInitScript.ts). Takes one JSON-serialisable config
+      // object; carries no coordinate, zoom, tile URL or attribution
+      // string of its own - every value here comes from the caller.
+      window.initLeafletMap = function (config) {
+        if (typeof L === 'undefined') {
+          post('initLeafletMap: L is undefined - leaflet.js did not load');
+          return;
+        }
+        try {
+          var map = L.map('map', {
+            center: [config.latitude, config.longitude],
+            zoom: config.zoom,
+            zoomControl: true,
+          });
+
+          L.tileLayer(config.tileUrlTemplate, {
+            maxZoom: config.maxZoom,
+            attribution: config.attributionHtml,
+          }).addTo(map);
+
+          // Success heartbeat: makes logcat silence diagnostic rather
+          // than ambiguous. A tagged error names the failing layer;
+          // init-ok plus a visible map is success; neither, with a
+          // blank map, means this script never ran at all.
+          post('init-ok');
+        } catch (err) {
+          post(
+            'initLeafletMap: threw: ' +
+              (err && err.message ? err.message : String(err)),
+          );
+        }
+      };
+    </script>
+  </body>
+</html>

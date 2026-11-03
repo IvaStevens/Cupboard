@@ -50,6 +50,55 @@ happens — even though bobuttons is a single package, a second installed
 its own configuration. Render `<BobuttonsProvider>` alone at the root (see
 `App.tsx`); never wrap the tree in a separate `<TamaguiProvider>`.
 
+## Chicago map (Leaflet)
+
+The app displays a Leaflet map centred on Chicago, rendered inside a
+`react-native-webview` loaded from a local Android asset
+(`file:///android_asset/leaflet/map.html`) - never as inlined
+`source={{ html }}`, since an inline document has no base URL for the
+relative `<script src="leaflet.js">` / `<link href="leaflet.css">` tags
+to resolve against. Map parameters (Chicago's coordinates, the initial
+zoom, the OSM tile URL template, the attribution string) live in
+`src/map/mapConstants.ts` and are passed into the page as one
+JSON-stringified config, never duplicated into `map.html`.
+
+### Leaflet provenance
+
+Vendored from npm, not a CDN:
+
+- Package: `leaflet`
+- Version: `1.9.4`
+- Source: https://www.npmjs.com/package/leaflet/v/1.9.4
+- Licence: BSD-2-Clause (Copyright (c) 2010-2023 Volodymyr Agafonkin;
+  Copyright (c) 2010-2011 CloudMade)
+- `android/app/src/main/assets/leaflet/leaflet.css` - verbatim copy of
+  `node_modules/leaflet/dist/leaflet.css`.
+  sha256: `a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6`
+- `android/app/src/main/assets/leaflet/leaflet.js` - `node_modules/leaflet/dist/leaflet.js`
+  with one `/* eslint-disable */` line prepended (so the vendored file
+  does not fail `npm run lint`; plain `eslint .` has no `--max-warnings`,
+  so the resulting `eslint-comments/no-unlimited-disable` warning does
+  not fail the build). sha256 of the bytes after the first newline
+  (computed the same way `tail -n +2 | sha256sum` does):
+  `db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a`
+
+To reproduce or refresh these two files (after bumping the `leaflet`
+devDependency):
+
+```
+mkdir -p android/app/src/main/assets/leaflet
+cp node_modules/leaflet/dist/leaflet.css android/app/src/main/assets/leaflet/leaflet.css
+printf '/* eslint-disable */\n' > android/app/src/main/assets/leaflet/leaflet.js
+cat node_modules/leaflet/dist/leaflet.js >> android/app/src/main/assets/leaflet/leaflet.js
+
+# re-verify
+sha256sum android/app/src/main/assets/leaflet/leaflet.css
+tail -n +2 android/app/src/main/assets/leaflet/leaflet.js | sha256sum
+```
+
+If either digest changes, update it here, in `__tests__/map.test.tsx`,
+and in `THIRD-PARTY-NOTICE.md` together.
+
 ## Icons
 
 This app includes no icons. bobuttons ships none, so it uses only the bobuttons

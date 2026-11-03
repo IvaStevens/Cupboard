@@ -1,11 +1,26 @@
 /**
- * Generated React Native app built entirely on bobuttons components.
+ * Cupboard: a React Native app built entirely on bobuttons components,
+ * showing a Leaflet map of Chicago.
  *
  * The root wraps the tree in `BobuttonsProvider` (with no `config` prop -
  * the provider wires its bundled Tamagui config internally) and never adds
  * a second, separate Tamagui provider. See the template README for why: a
  * second provider/config is exactly how the "can't find Tamagui
  * configuration" crash happens even with a single Tamagui copy installed.
+ *
+ * `AppShell`'s `header` prop is omitted entirely - nothing goes in the
+ * header for now (author's instruction). bobuttons' `AppHeader` declares
+ * `title: string` as required and also renders a date, so even
+ * `title=""` would leave visible header content; modifying bobuttons is
+ * out of scope, so the header is left out rather than passed empty.
+ *
+ * The map fills the content area directly under `AppShell` rather than
+ * going through `ViewPane`/`ViewBody`: reading bobuttons' installed
+ * source shows both `ViewPane` and `ViewBody` apply non-zero padding, and
+ * `ViewBody` also wraps its children in a scrollable `Scroll` primitive -
+ * either would fight the map's own pan/zoom. The map stays inside
+ * `AppShell`, which is the author-approved requirement; it is not a bare
+ * full-screen WebView replacing the shell.
  *
  * No icons are used: bobuttons ships none, so this screen sticks to the
  * components that need no icon source.
@@ -14,31 +29,13 @@
  */
 
 import * as React from 'react';
-import { useState } from 'react';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import {
-  AppHeader,
-  AppShell,
-  Badge,
-  BobuttonsProvider,
-  Button,
-  Checkbox,
-  Radio,
-  RadioGroup,
-  SquareGrid,
-  Tabs,
-  TextInput,
-  ViewBody,
-  ViewPane,
-  ViewToolbar,
-} from 'bobuttons';
-import { name as appName } from './app.json';
-
-type TabId = 'home' | 'activity' | 'settings';
+import {AppShell, BobuttonsProvider} from 'bobuttons';
+import MapScreen from './src/map/MapScreen';
 
 function App() {
   return (
@@ -53,67 +50,10 @@ function App() {
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  const [tab, setTab] = useState<TabId>('home');
-  const [text, setText] = useState('');
-  const [checked, setChecked] = useState(true);
-  const [choice, setChoice] = useState<'a' | 'b'>('a');
-  const [taps, setTaps] = useState(0);
 
   return (
-    <AppShell
-      insets={insets}
-      header={<AppHeader title={appName} />}
-      sidebar={
-        <Tabs
-          tabs={[
-            { id: 'home', label: 'Home' },
-            { id: 'activity', label: 'Activity' },
-            { id: 'settings', label: 'Settings' },
-          ]}
-          current={tab}
-          onChange={setTab}
-        />
-      }
-    >
-      <ViewPane>
-        <ViewToolbar
-          title={tab}
-          actions={<Badge label={`${taps} taps`} tone="accent" />}
-        />
-        <ViewBody>
-          <Button
-            label="Hello from bobuttons"
-            onPress={() => setTaps(taps + 1)}
-          />
-          <TextInput
-            value={text}
-            onChange={setText}
-            placeholder="Type here"
-          />
-          <Checkbox label="Checkbox" checked={checked} onChange={setChecked} />
-          <RadioGroup label="Radio group">
-            <Radio
-              label="Option A"
-              checked={choice === 'a'}
-              onSelect={() => setChoice('a')}
-            />
-            <Radio
-              label="Option B"
-              checked={choice === 'b'}
-              onSelect={() => setChoice('b')}
-            />
-          </RadioGroup>
-          <SquareGrid
-            columns={3}
-            rows={1}
-            cells={[
-              { color: '$primary', text: 'A' },
-              { color: '$secondary', text: 'B' },
-              { color: '$accent', text: 'C' },
-            ]}
-          />
-        </ViewBody>
-      </ViewPane>
+    <AppShell insets={insets}>
+      <MapScreen />
     </AppShell>
   );
 }
