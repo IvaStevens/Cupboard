@@ -115,6 +115,26 @@
             attribution: config.attributionHtml,
           }).addTo(map);
 
+          // The injectedJavaScript that calls this function runs once
+          // the page's own "load" event fires, which can be before the
+          // native Android WebView has finished its own layout pass -
+          // this #map div can still measure 0x0 (or a stale size) at
+          // the instant L.map() reads it. Leaflet bakes that size into
+          // its initial pixel transform, so the map renders with the
+          // wrong area in view (center pinned near the container's
+          // top-left instead of its middle) even though center/zoom
+          // were passed correctly. A double requestAnimationFrame
+          // defers to after the browser's next two paint/layout passes,
+          // by which point the WebView's real size is stable; then
+          // invalidateSize()+setView() recomputes the transform against
+          // that real size.
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              map.invalidateSize();
+              map.setView([config.latitude, config.longitude], config.zoom);
+            });
+          });
+
           // Success heartbeat: makes logcat silence diagnostic rather
           // than ambiguous. A tagged error names the failing layer;
           // init-ok plus a visible map is success; neither, with a
