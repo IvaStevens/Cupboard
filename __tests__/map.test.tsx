@@ -323,19 +323,33 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
         expect(node.props[scrollProp]).toBeUndefined();
       }
 
+      const PADDING_KEYS = [
+        'padding',
+        'paddingTop',
+        'paddingBottom',
+        'paddingLeft',
+        'paddingRight',
+        'paddingHorizontal',
+        'paddingVertical',
+      ];
+
+      // Checked on node.props directly, not just node.props.style:
+      // AppShell's own Frame takes paddingTop/paddingBottom/paddingLeft/
+      // paddingRight as style PROPS, and bobuttons' Tamagui styled()
+      // definitions (e.g. ViewPane's Gutter/Card) bake padding in as
+      // props too, not as a `style` object - a style-only check would
+      // miss both.
+      for (const key of PADDING_KEYS) {
+        if (key in node.props) {
+          expect(node.props[key]).toBe(0);
+        }
+      }
+
       const style = node.props.style;
       const styles = Array.isArray(style) ? style : [style];
       for (const s of styles) {
         if (s && typeof s === 'object') {
-          for (const key of [
-            'padding',
-            'paddingTop',
-            'paddingBottom',
-            'paddingLeft',
-            'paddingRight',
-            'paddingHorizontal',
-            'paddingVertical',
-          ]) {
+          for (const key of PADDING_KEYS) {
             if (key in s) {
               expect(s[key]).toBe(0);
             }

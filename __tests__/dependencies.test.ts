@@ -21,8 +21,12 @@
  * (a second, separately-installed Tamagui copy alongside the one
  * bobuttons bundles - the exact scenario that produces the "can't find
  * Tamagui configuration" runtime crash). This test therefore asserts
- * "no resolved @tamagui/core entry" (<= 1, currently 0) rather than
- * "exactly one", and the PR documents this deviation explicitly.
+ * "zero resolved @tamagui/core entries" rather than "exactly one": a
+ * `toBe(0)` bound, not `toBeLessThanOrEqual(1)` - the laxer bound would
+ * stay green if a transitive @tamagui/core ever materialised as a
+ * single node_modules entry, which alongside bobuttons' bundled copy is
+ * precisely the second-copy regression this guard exists to catch. The
+ * PR documents this wording deviation explicitly.
  *
  * @format
  */
@@ -126,12 +130,13 @@ describe('installed tree has no second Tamagui or web copy', () => {
       );
     }
 
-    // <=1, not the ticket text's literal "exactly one" - see the
-    // MEASURED DEVIATION note at the top of this file. Currently 0: no
-    // @tamagui/core is a node_modules entry at all, bundled or
-    // otherwise, since bobuttons bundles its own copy inside its built
-    // files rather than declaring it as a dependency.
-    expect(countResolvedOccurrences(tree, '@tamagui/core')).toBeLessThanOrEqual(1);
+    // 0, not the ticket text's literal "exactly one" - see the MEASURED
+    // DEVIATION note at the top of this file. No @tamagui/core is a
+    // node_modules entry at all, bundled or otherwise, since bobuttons
+    // bundles its own copy inside its built files rather than declaring
+    // it as a dependency; a resolved entry here would be the second-copy
+    // regression this guard exists to catch.
+    expect(countResolvedOccurrences(tree, '@tamagui/core')).toBe(0);
     expect(countResolvedOccurrences(tree, 'react-dom')).toBe(0);
     expect(countResolvedOccurrences(tree, 'react-native-web')).toBe(0);
   }, NPM_LS_TIMEOUT_MS + 10_000);

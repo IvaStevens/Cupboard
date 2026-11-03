@@ -28,25 +28,31 @@ import type {
   WebViewMessageEvent,
   WebViewRenderProcessGoneEvent,
 } from 'react-native-webview/lib/WebViewTypes';
-import {
-  MAP_ASSET_DIR_URI,
-  MAP_HTML_ASSET_URI,
-  MAP_LOG_TAG,
-} from './mapConstants';
+import {MAP_HTML_ASSET_URI, MAP_LOG_TAG} from './mapConstants';
 import {buildMapInitScript} from './mapInitScript';
 
 const injectedJavaScript = buildMapInitScript();
+
+// The tagged line map.html's post() helper produces for the success
+// heartbeat (TAG + ' ' + 'init-ok'). Mirrors map.html's own literal
+// rather than importing it, the same way map.html mirrors MAP_LOG_TAG as
+// a literal - a log tag/message is not a map parameter, so it is not
+// subject to the no-duplication rule those values carry.
+const MAP_INIT_OK_LOG_LINE = `${MAP_LOG_TAG} init-ok`;
 
 /**
  * Gates top-level navigations only (subresources, such as OSM tiles, are
  * unaffected). The initial load and the post-remount load are never
  * gated at all - Android does not call this for a page-initiated load -
  * so this exists to block navigations a user could otherwise trigger,
- * such as tapping the OSM attribution link. A prefix match, not exact
- * equality, since the bundled document can carry a query/hash.
+ * such as tapping the OSM attribution link. A prefix match against the
+ * bundled document itself (not the whole asset directory), since the
+ * bundled document can carry a query/hash but this must admit only the
+ * bundled asset URL - not a top-level navigation to a sibling asset such
+ * as leaflet.js/leaflet.css.
  */
 function shouldAllowNavigation(request: ShouldStartLoadRequest): boolean {
-  const allowed = request.url.startsWith(MAP_ASSET_DIR_URI);
+  const allowed = request.url.startsWith(MAP_HTML_ASSET_URI);
   if (!allowed) {
     console.warn(`${MAP_LOG_TAG} blocked navigation to ${request.url}`);
   }
@@ -79,9 +85,20 @@ function MapScreen(): React.ReactElement {
 
   const handleMessage = useCallback((event: WebViewMessageEvent) => {
     // map.html and mapInitScript.ts already prefix every message with
-    // MAP_LOG_TAG; this is the one JS console.warn every in-page signal
-    // exits through (in-page console is swallowed in release builds).
-    console.warn(event.nativeEvent.data);
+    // MAP_LOG_TAG; this is the channel every in-page signal exits
+    // through (in-page console is swallowed in release builds). The
+    // init-ok heartbeat is a SUCCESS signal, not a failure - logging it
+    // at warn level put a LogBox banner over the map on every successful
+    // launch (confirmed on-device), so it alone is logged at console.log.
+    // Every other in-page message (the layer-1/layer-2 guards,
+    // window.onerror, a throwing initLeafletMap) still exits through
+    // console.warn.
+    const data = event.nativeEvent.data;
+    if (data === MAP_INIT_OK_LOG_LINE) {
+      console.log(data);
+    } else {
+      console.warn(data);
+    }
   }, []);
 
   const handleRenderProcessGone = useCallback(

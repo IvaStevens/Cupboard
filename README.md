@@ -110,14 +110,9 @@ Do not add `@tamagui/*` packages to generate them; see the section above.
 
 ## Jest
 
-This template's `jest.config.js` is unmodified from the plain
-react-native-android template (`preset: 'react-native'`, nothing else). No
-sample test importing bobuttons ships in this template, so `npm test` runs
-with zero test files and passes via `--passWithNoTests`.
-
-If you add a test that imports or renders a bobuttons component, add
-`bobuttons` to `transformIgnorePatterns` while keeping the `react-native`
-preset's own pattern, for example:
+This app's `jest.config.js` appends `bobuttons` to the `react-native`
+preset's own `transformIgnorePatterns` alternation, because `App.test.tsx`
+and `map.test.tsx` render `AppShell` from bobuttons:
 
 ```js
 module.exports = {
@@ -134,6 +129,17 @@ bobuttons — bobuttons' build (`dist/index.native.js`) is ESM
 (`"type": "module"`), which is why an unmodified Jest config fails with
 `SyntaxError: Cannot use import statement outside a module` the moment a
 test imports it.
+
+Three test files ship with this app: `__tests__/App.test.tsx` (the
+generator's smoke test, kept in its generated shape - it renders through
+the real `SafeAreaProvider`, which yields zero children under Jest, so it
+asserts nothing about the tree, but it does exercise the
+`react-native-webview` mock every test file that reaches that module needs,
+since its entry is ESM and the preset does not whitelist it);
+`__tests__/map.test.tsx` (the AC-bearing test for the Leaflet map - see
+`src/map/`); and `__tests__/dependencies.test.ts` (the installed-tree guard
+against a second Tamagui or web copy - see "Never install `@tamagui/*` in
+this app" above).
 
 ## Licence notices
 
