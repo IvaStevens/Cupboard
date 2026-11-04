@@ -4,9 +4,13 @@
  *  - VIEW CONSTANTS ARE ACTUALLY CONSUMED
  *  - LEAFLET ASSET MECHANISM
  *  - WEBVIEW SECURITY SETTINGS PINNED
- *  - PAN, ZOOM AND GESTURE OWNERSHIP (ancestor walk)
- *  - LAYOUT INSIDE THE APP SHELL / HEADER SHOWS NOTHING / SAFE AREA WIRED
- *  - DIAGNOSABLE FAILURE PATH (injected-script guard)
+ *  - PAN, ZOOM AND GESTURE OWNERSHIP (ancestor walk, now a measured
+ *    allowlist rather than a blanket zero-padding rule, because
+ *    `ViewPane` sits above the map by design)
+ *  - LAYOUT INSIDE THE APP SHELL / HEADER IS AppHeader / SAFE AREA WIRED
+ *  - DIAGNOSABLE FAILURE PATH (injected-script guard, size-conditional
+ *    init-view apply, capped/throttled tile-error reporting)
+ *  - ATTRIBUTION STAYS CLEAR OF ViewPane's ROUNDED CORNER
  *  - THIRD-PARTY PROVENANCE RECORDED (asset digests)
  *
  * `/// <reference types="node" />` is required because this template's
@@ -24,7 +28,7 @@ import * as React from 'react';
 import renderer, {act} from 'react-test-renderer';
 import type {ReactTestInstance} from 'react-test-renderer';
 
-import {AppShell} from 'bobuttons';
+import {AppHeader, AppShell} from 'bobuttons';
 import App from '../App';
 import MapScreen from '../src/map/MapScreen';
 import {
@@ -174,6 +178,34 @@ describe('map.html asset mechanism', () => {
     expect(html).not.toContain('-87.6298');
     expect(html).not.toMatch(/\btile\.openstreetmap\.org\b/);
   });
+
+  it('applies the initial view on a size condition, not an unconditional double-rAF', () => {
+    // dba2a4c's two-frame defer stays as the first attempt...
+    expect(html).toMatch(
+      /requestAnimationFrame\(function\s*\(\)\s*{\s*requestAnimationFrame\(applyInitialView\);/,
+    );
+    // ...but the apply itself is gated on #map's measured size, bounded
+    // by a named attempt cap, not a bare frame count.
+    expect(html).toContain('clientWidth');
+    expect(html).toContain('clientHeight');
+    expect(html).toContain('INIT_VIEW_MAX_ATTEMPTS');
+    expect(html).toMatch(/applied anyway|applying anyway/);
+    expect(html).toMatch(/re-applying at first non-zero size/);
+  });
+
+  it('nudges the OSM attribution control clear of ViewPane\'s rounded corner', () => {
+    expect(html).toMatch(
+      /\.leaflet-container\s+\.leaflet-control-attribution\s*{[^}]*margin-bottom:\s*6px;[^}]*margin-right:\s*6px;/,
+    );
+  });
+
+  it('carries a throttled, capped tileerror handler that posts the first failure with a URL', () => {
+    expect(html).toContain('TILE_ERROR_POST_INTERVAL_MS');
+    expect(html).toContain('TILE_ERROR_MAX_POSTS');
+    expect(html).toMatch(/tileLayer\.on\(\s*'tileerror'/);
+    expect(html).toMatch(/tile-error: first failure/);
+    expect(html).toContain('e.tile.src');
+  });
 });
 
 describe('vendored Leaflet asset provenance', () => {
@@ -258,7 +290,7 @@ describe('MapScreen WebView wiring', () => {
   });
 });
 
-describe('App composition: header omission, insets, and no scroll/padding ancestor', () => {
+describe('App composition: AppHeader, insets, and the ViewPane ancestor allowlist', () => {
   function renderApp(): ReactTestInstance {
     let instance!: renderer.ReactTestRenderer;
     act(() => {
@@ -267,11 +299,20 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
     return instance.root;
   }
 
-  it('renders AppShell with no header prop and the safe-area insets', () => {
+  it('renders AppShell with an AppHeader (title/locale/timeZone) and the safe-area insets', () => {
     const root = renderApp();
     const shell = root.findByType(AppShell);
 
-    expect('header' in shell.props).toBe(false);
+    const header = shell.props.header as ReactTestInstance;
+    expect(React.isValidElement(header)).toBe(true);
+    expect((header as unknown as {type: unknown}).type).toBe(AppHeader);
+    const headerProps = (header as unknown as {
+      props: {title: string; locale: string; timeZone: string};
+    }).props;
+    expect(headerProps.title).toBe('Cupboard');
+    expect(headerProps.locale).toBe('en-US');
+    expect(headerProps.timeZone).toBe('America/Chicago');
+
     expect(shell.props.insets).toEqual(ZERO_INSETS);
   });
 
@@ -287,7 +328,7 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
     expect(shell.findByType(WebView)).toBe(webview);
   });
 
-  it('has no scroll-host ancestor, scroll-prop ancestor, or non-zero-padding ancestor above the WebView (at zero stub insets)', () => {
+  it('has no scroll-host ancestor or scroll-prop ancestor above the WebView, and every padded ancestor is a measured, allowlisted ViewPane layer (at zero stub insets)', () => {
     const root = renderApp();
     const {WebView} = jest.requireMock('react-native-webview') as {
       WebView: React.ComponentType;
@@ -308,7 +349,20 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
       'contentContainerStyle',
     ];
 
+    // Measured today: Gutter's paddingVertical/paddingRight is $1.5 (= 6)
+    // and Card's paddingTop is $2.5 (= 10) - see
+    // node_modules/bobuttons/dist/tokens/space.d.ts and ViewPane's
+    // styled() definitions in node_modules/bobuttons/dist/index.native.js.
+    // Tamagui bakes these as props (not necessarily resolved to a style
+    // object), and the surfaced form can be either the resolved number or
+    // the token string, so both are allowed. This is an ALLOWLIST, not a
+    // blanket "no padding" rule: a future ancestor with a padding value
+    // outside this list still fails, which is the point - only ViewPane's
+    // own, already-measured padding is permitted.
+    const ALLOWED_PADDING_VALUES = new Set<unknown>([0, 6, 10, '$1.5', '$2.5']);
+
     let node: ReactTestInstance | null = webview.parent;
+    let sawAllowlistedPadding = false;
     while (node) {
       const typeName =
         typeof node.type === 'string'
@@ -341,7 +395,11 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
       // miss both.
       for (const key of PADDING_KEYS) {
         if (key in node.props) {
-          expect(node.props[key]).toBe(0);
+          const value = node.props[key];
+          expect(ALLOWED_PADDING_VALUES.has(value)).toBe(true);
+          if (value !== 0) {
+            sawAllowlistedPadding = true;
+          }
         }
       }
 
@@ -351,7 +409,11 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
         if (s && typeof s === 'object') {
           for (const key of PADDING_KEYS) {
             if (key in s) {
-              expect(s[key]).toBe(0);
+              const value = (s as Record<string, unknown>)[key];
+              expect(ALLOWED_PADDING_VALUES.has(value)).toBe(true);
+              if (value !== 0) {
+                sawAllowlistedPadding = true;
+              }
             }
           }
         }
@@ -359,5 +421,10 @@ describe('App composition: header omission, insets, and no scroll/padding ancest
 
       node = node.parent;
     }
+
+    // Non-vacuity: at least one ancestor must actually hit the
+    // allowlist, so a refactor that silently removes ViewPane cannot
+    // leave this rule passing trivially.
+    expect(sawAllowlistedPadding).toBe(true);
   });
 });

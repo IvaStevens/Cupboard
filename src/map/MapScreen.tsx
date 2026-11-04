@@ -40,6 +40,13 @@ const injectedJavaScript = buildMapInitScript();
 // subject to the no-duplication rule those values carry.
 const MAP_INIT_OK_LOG_LINE = `${MAP_LOG_TAG} init-ok`;
 
+// Prefix for map.html's tile-error diagnostics (both the first,
+// URL-carrying line and the later throttled/capped count summaries - see
+// map.html's tileerror handler). Like MAP_INIT_OK_LOG_LINE above, this is
+// an expected-condition log line, not a failure of this screen, so it is
+// also routed to console.log rather than console.warn.
+const MAP_TILE_ERROR_LOG_PREFIX = `${MAP_LOG_TAG} tile-error`;
+
 /**
  * Gates top-level navigations only (subresources, such as OSM tiles, are
  * unaffected). The initial load and the post-remount load are never
@@ -90,11 +97,18 @@ function MapScreen(): React.ReactElement {
     // init-ok heartbeat is a SUCCESS signal, not a failure - logging it
     // at warn level put a LogBox banner over the map on every successful
     // launch (confirmed on-device), so it alone is logged at console.log.
-    // Every other in-page message (the layer-1/layer-2 guards,
-    // window.onerror, a throwing initLeafletMap) still exits through
-    // console.warn.
+    // A tile-fetch failure (offline, a blocked endpoint, OSM rate-
+    // limiting) is explicitly accepted as degraded-but-silent for this
+    // ticket - no error/retry UI - but still diagnosable, so its tagged
+    // line is also routed to console.log rather than console.warn for
+    // the same LogBox reason. Every other in-page message (the
+    // layer-1/layer-2 guards, window.onerror, a throwing initLeafletMap)
+    // still exits through console.warn.
     const data = event.nativeEvent.data;
-    if (data === MAP_INIT_OK_LOG_LINE) {
+    if (
+      data === MAP_INIT_OK_LOG_LINE ||
+      data.startsWith(MAP_TILE_ERROR_LOG_PREFIX)
+    ) {
       console.log(data);
     } else {
       console.warn(data);

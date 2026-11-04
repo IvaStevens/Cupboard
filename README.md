@@ -50,6 +50,37 @@ happens — even though bobuttons is a single package, a second installed
 its own configuration. Render `<BobuttonsProvider>` alone at the root (see
 `App.tsx`); never wrap the tree in a separate `<TamaguiProvider>`.
 
+## App shell and navigation
+
+The app renders a bobuttons `AppShell` with:
+
+- `header`: an `AppHeader` with `title="Cupboard"`, and `locale="en-US"` /
+  `timeZone="America/Chicago"` passed explicitly (`AppHeader` otherwise
+  defaults `timeZone` to `"UTC"`, which would show the wrong date for
+  part of every day in a Chicago-centric app). On a phone-width layout
+  `AppHeader` renders no date at all (its `DateLabel` only shows above
+  the `mobile` breakpoint), so this has no visible effect on the
+  supported Android target today, but the props are correct regardless.
+- `sidebar`: bobuttons' `Tabs` primitive (not `TabBar`, which requires a
+  per-tab icon - bobuttons ships none, and icons are a follow-up ticket)
+  carrying exactly three label-only entries, in order: Settings, Places,
+  Notes. On a phone this
+  renders as a full-width strip above the content rather than a left
+  rail; a true left-rail layout is tracked as generator/library follow-up
+  work, not this ticket.
+- One `ViewPane` (never `ViewBody`, which wraps children in a scrollable
+  `Scroll` primitive that would fight the map's own pan/zoom) holding
+  either the map (the default view) or the active entry's placeholder.
+
+Selecting Settings, Places or Notes unmounts the map and mounts an empty,
+icon-free placeholder for that entry (just the entry's name and a
+"Back to map" button) - no real feature sits behind any of the three.
+Returning to the map - via that button, or the Android hardware back
+button - unmounts the placeholder and mounts a fresh `MapScreen`, which
+reloads centred back on Chicago from the pinned constants (see below);
+it does not resume wherever the map was left. Hardware back on the map
+itself falls through to the platform default (exits the app).
+
 ## Chicago map (Leaflet)
 
 The app displays a Leaflet map centred on Chicago, rendered inside a
@@ -61,6 +92,30 @@ to resolve against. Map parameters (Chicago's coordinates, the initial
 zoom, the OSM tile URL template, the attribution string) live in
 `src/map/mapConstants.ts` and are passed into the page as one
 JSON-stringified config, never duplicated into `map.html`.
+
+### Known offline / blocked-tile behaviour
+
+If tiles cannot be fetched (no network, a blocked endpoint, or OSM
+rate-limiting), the map shows a blank/grey surface. This is deliberate
+for this ticket: no error message or retry control is built - any
+user-facing surface for a failed tile fetch is separate, out-of-scope
+work. The condition stays diagnosable from logs: `map.html`'s tile layer
+posts the first failure (with the failing tile's URL) and then at most
+one throttled summary line every few seconds, up to a hard cap, through
+the same `MAP_LOG_TAG` channel every other in-page diagnostic uses:
+
+```
+adb logcat -d | grep CupboardMap
+```
+
+### Renderer-crash recovery
+
+If the WebView's render process is reclaimed by the OS
+(`onRenderProcessGone`), `MapScreen` reloads the page from the pinned
+Chicago constants - this is the designed recovery (there is no other
+correct one from a dead renderer), and it resets the view rather than
+restoring whatever pan/zoom position the user had reached. This is
+already logged through `MAP_LOG_TAG`.
 
 ### Leaflet provenance
 
@@ -97,7 +152,20 @@ tail -n +2 android/app/src/main/assets/leaflet/leaflet.js | sha256sum
 ```
 
 If either digest changes, update it here, in `__tests__/map.test.tsx`,
-and in `THIRD-PARTY-NOTICE.md` together.
+and in `THIRD-PARTY-NOTICE.md` together. `__tests__/leafletAssets.test.ts`
+separately ties the vendored `leaflet.js`/`leaflet.css` to the pinned
+`leaflet` devDependency version (byte-comparing against
+`node_modules/leaflet/dist`), so the vendored copy and the pinned package
+cannot drift unnoticed between refreshes of the digests above.
+
+`map.html`'s in-page `<style>` block also nudges the OSM attribution
+control a few pixels off the bottom-right corner
+(`.leaflet-container .leaflet-control-attribution { margin-bottom: 6px;
+margin-right: 6px; }`), so it is not clipped by the rounded corner of the
+bobuttons `ViewPane` card the map renders inside. `leaflet.css` itself
+stays byte-identical to the pinned npm package - the rule lives in
+`map.html`, which is parsed after `leaflet.css` and wins at equal CSS
+specificity.
 
 ## Icons
 
@@ -130,16 +198,33 @@ bobuttons — bobuttons' build (`dist/index.native.js`) is ESM
 `SyntaxError: Cannot use import statement outside a module` the moment a
 test imports it.
 
-Three test files ship with this app: `__tests__/App.test.tsx` (the
+Five test files ship with this app: `__tests__/App.test.tsx` (the
 generator's smoke test, kept in its generated shape - it renders through
 the real `SafeAreaProvider`, which yields zero children under Jest, so it
 asserts nothing about the tree, but it does exercise the
 `react-native-webview` mock every test file that reaches that module needs,
 since its entry is ESM and the preset does not whitelist it);
-`__tests__/map.test.tsx` (the AC-bearing test for the Leaflet map - see
-`src/map/`); and `__tests__/dependencies.test.ts` (the installed-tree guard
-against a second Tamagui or web copy - see "Never install `@tamagui/*` in
-this app" above).
+`__tests__/map.test.tsx` (the AC-bearing test for the Leaflet map itself -
+see `src/map/`); `__tests__/shell.test.tsx` (the AC-bearing test for the
+app shell: the header, the three-entry sidebar and its order, the map as
+the default view, per-entry placeholder selection, and both return-to-map
+paths); `__tests__/leafletAssets.test.ts` (ties the vendored Leaflet
+assets to the pinned `leaflet` devDependency - see above); and
+`__tests__/dependencies.test.ts` (the installed-tree guard against a
+second Tamagui or web copy - see "Never install `@tamagui/*` in this app"
+above).
+
+## Gates
+
+Before opening or updating a PR, all of the following must be green:
+
+```
+npm test        # jest - no --passWithNoTests: a suite that stops being
+                 # discovered must fail the gate, not silently pass
+npm run lint     # eslint .
+npm run typecheck # tsc --noEmit
+cd android && ./gradlew assembleDebug
+```
 
 ## Licence notices
 

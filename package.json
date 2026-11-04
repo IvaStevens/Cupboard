@@ -6,7 +6,8 @@
     "android": "react-native run-android",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest --passWithNoTests"
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "bobuttons": "file:vendor/bobuttons-0.1.0.tgz",

@@ -43,6 +43,26 @@
         bottom: 0;
         left: 0;
       }
+
+      /*
+        Nudges the OSM attribution control off the bottom-right corner so
+        it clears ViewPane's Card, which is overflow:hidden with an 8px
+        (token $3) rounded corner on-device - a flush-to-the-corner chip
+        would be clipped by that arc. leaflet.css:413-416 sets `margin: 0`
+        on this exact selector and, at equal specificity but later in the
+        file, beats .leaflet-bottom/.leaflet-right's own 10px margins, so
+        this rule has to live here (parsed after the <link>, so it wins)
+        rather than in leaflet.css, which stays byte-identical to the
+        pinned npm package (see __tests__/leafletAssets.test.ts and the
+        existing digest test in __tests__/map.test.tsx). 6px clears an
+        8px-radius corner's ~2.34px inset with margin to spare, and is a
+        CSS literal, not a map coordinate/zoom/tile-URL/attribution
+        string - it says nothing about where Chicago is.
+      */
+      .leaflet-container .leaflet-control-attribution {
+        margin-bottom: 6px;
+        margin-right: 6px;
+      }
     </style>
   </head>
   <body>
@@ -55,6 +75,18 @@
       // URL/attribution), so it is not subject to the no-duplication
       // rule those values carry.
       var TAG = '[CupboardMap]';
+
+      // Bounds how many times the deferred init-view guard below will
+      // re-check #map's size before giving up and applying anyway. A
+      // named cap, not a magic number in the loop.
+      var INIT_VIEW_MAX_ATTEMPTS = 30;
+
+      // Throttle + hard cap for the tileerror handler: an offline device
+      // or a blocked/rate-limited OSM endpoint can otherwise fail every
+      // tile forever, which without a cap would log a summary line every
+      // few seconds for the entire life of the session.
+      var TILE_ERROR_POST_INTERVAL_MS = 5000;
+      var TILE_ERROR_MAX_POSTS = 20;
 
       // Guarded so a reporting call can never itself throw - this helper
       // is used from window.onerror, where a throw would be swallowed
@@ -110,10 +142,46 @@
             zoomControl: true,
           });
 
-          L.tileLayer(config.tileUrlTemplate, {
+          var tileLayer = L.tileLayer(config.tileUrlTemplate, {
             maxZoom: config.maxZoom,
             attribution: config.attributionHtml,
           }).addTo(map);
+
+          // Tile-fetch failure (no network, a blocked endpoint, OSM
+          // rate-limiting) is accepted as degraded-but-silent for this
+          // ticket: no error/retry UI is built, but the condition must
+          // stay diagnosable from logs. The first failure posts with the
+          // failing tile's URL; after that, at most one throttled
+          // summary line per TILE_ERROR_POST_INTERVAL_MS carrying the
+          // running count, up to TILE_ERROR_MAX_POSTS, after which this
+          // goes silent - an unbounded window would otherwise log every
+          // few seconds for the life of the session while offline.
+          var tileErrorCount = 0;
+          var tileErrorPostCount = 0;
+          var tileErrorLastPostAt = 0;
+          tileLayer.on('tileerror', function (e) {
+            tileErrorCount += 1;
+            if (tileErrorPostCount >= TILE_ERROR_MAX_POSTS) {
+              return;
+            }
+            if (tileErrorPostCount === 0) {
+              post(
+                'tile-error: first failure, count=' +
+                  tileErrorCount +
+                  ', url=' +
+                  (e && e.tile && e.tile.src ? e.tile.src : 'unknown'),
+              );
+              tileErrorPostCount += 1;
+              tileErrorLastPostAt = Date.now();
+              return;
+            }
+            var now = Date.now();
+            if (now - tileErrorLastPostAt >= TILE_ERROR_POST_INTERVAL_MS) {
+              post('tile-error: count=' + tileErrorCount);
+              tileErrorPostCount += 1;
+              tileErrorLastPostAt = now;
+            }
+          });
 
           // The injectedJavaScript that calls this function runs once
           // the page's own "load" event fires, which can be before the
@@ -123,16 +191,58 @@
           // its initial pixel transform, so the map renders with the
           // wrong area in view (center pinned near the container's
           // top-left instead of its middle) even though center/zoom
-          // were passed correctly. A double requestAnimationFrame
-          // defers to after the browser's next two paint/layout passes,
-          // by which point the WebView's real size is stable; then
-          // invalidateSize()+setView() recomputes the transform against
-          // that real size.
+          // were passed correctly. A double requestAnimationFrame still
+          // defers the first attempt to after the browser's next two
+          // paint/layout passes (keeps the fix from dba2a4c), but the
+          // apply itself is now gated on a SIZE CONDITION rather than a
+          // frame count: if #map still measures 0x0, it re-checks on the
+          // next frame, up to INIT_VIEW_MAX_ATTEMPTS, logging once if
+          // that cap is reached and applying anyway (recording that it
+          // applied at zero size); if a later frame is ever the first to
+          // observe a non-zero size after that, it re-applies once more.
+          var initViewAttempts = 0;
+          function hasMapSize() {
+            var el = document.getElementById('map');
+            return !!el && el.clientWidth > 0 && el.clientHeight > 0;
+          }
+          function applyView() {
+            map.invalidateSize();
+            map.setView([config.latitude, config.longitude], config.zoom);
+          }
+          // One-shot recovery: runs AFTER the cap below is exhausted at
+          // zero size, bounded by the same named cap rather than polling
+          // forever, so a WebView that never reports a size cannot start
+          // an unbounded rAF loop.
+          function watchForRecovery(attemptsSoFar) {
+            if (hasMapSize()) {
+              post('init-view: re-applying at first non-zero size');
+              applyView();
+              return;
+            }
+            if (attemptsSoFar < INIT_VIEW_MAX_ATTEMPTS) {
+              requestAnimationFrame(function () {
+                watchForRecovery(attemptsSoFar + 1);
+              });
+            }
+          }
+          function applyInitialView() {
+            initViewAttempts += 1;
+            if (!hasMapSize() && initViewAttempts < INIT_VIEW_MAX_ATTEMPTS) {
+              requestAnimationFrame(applyInitialView);
+              return;
+            }
+            if (!hasMapSize()) {
+              post(
+                'init-view: attempt cap reached at zero size, applying anyway',
+              );
+              applyView();
+              watchForRecovery(0);
+              return;
+            }
+            applyView();
+          }
           requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-              map.invalidateSize();
-              map.setView([config.latitude, config.longitude], config.zoom);
-            });
+            requestAnimationFrame(applyInitialView);
           });
 
           // Success heartbeat: makes logcat silence diagnostic rather

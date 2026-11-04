@@ -3,9 +3,12 @@
  * SafeAreaProvider and BobuttonsProvider and asserts nothing about the
  * resulting tree - under Jest, `SafeAreaProvider` renders zero children,
  * so there is nothing here to assert against. The mechanism checks
- * (header omission, insets, injected script, security props, gesture
+ * (AppHeader, insets, injected script, security props, gesture
  * ownership) live in map.test.tsx, which renders `MapScreen` directly
- * under a mocked safe-area provider.
+ * under a mocked safe-area provider; the shell/navigation checks
+ * (sidebar labels, default view, placeholder selection, return-to-map)
+ * live in shell.test.tsx, which also mocks safe-area-context so
+ * `AppContent` actually mounts.
  *
  * react-native-webview is mocked because its package entry is ESM and
  * is not whitelisted by the react-native Jest preset's
