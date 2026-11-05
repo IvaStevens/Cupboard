@@ -19,9 +19,8 @@
  * `AppShell` is one `ViewPane` (never `ViewBody`, which wraps children in
  * a scrollable `Scroll` primitive that would fight the map's pan/zoom),
  * holding either the map (the default view) or the active entry's
- * placeholder. `ViewPane` does add non-zero padding around its content
- * (measured and allowed for in `__tests__/map.test.tsx`), but it does not
- * itself scroll or otherwise intercept gestures, so the map's own
+ * placeholder. `ViewPane` does add non-zero padding around its content,
+ * but it does not itself scroll or otherwise intercept gestures, so the map's own
  * pan/zoom is unaffected.
  *
  * NAVIGATION MODEL: the map is the default view (`activeView ===

@@ -53,8 +53,7 @@
         file, beats .leaflet-bottom/.leaflet-right's own 10px margins, so
         this rule has to live here (parsed after the <link>, so it wins)
         rather than in leaflet.css, which stays byte-identical to the
-        pinned npm package (see __tests__/leafletAssets.test.ts and the
-        existing digest test in __tests__/map.test.tsx). 6px clears an
+        pinned npm package (see the README's Leaflet section). 6px clears an
         8px-radius corner's ~2.34px inset with margin to spare, and is a
         CSS literal, not a map coordinate/zoom/tile-URL/attribution
         string - it says nothing about where Chicago is.
