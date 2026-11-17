@@ -10,7 +10,7 @@
 import * as React from 'react';
 import renderer, {act} from 'react-test-renderer';
 import type {ReactTestInstance} from 'react-test-renderer';
-import {AppHeader, AppShell, Tabs} from 'bobuttons';
+import {AppHeader, AppShell, TabBar} from 'bobuttons';
 
 import App from '../App';
 import PlaceholderView from '../src/views/PlaceholderView';
@@ -80,7 +80,7 @@ describe('shell', () => {
       type: unknown;
       props: {tabs: unknown};
     };
-    expect(sidebar.type).toBe(Tabs);
+    expect(sidebar.type).toBe(TabBar);
     expect(sidebar.props.tabs).toEqual(SIDEBAR_ENTRIES);
     expect(SIDEBAR_ENTRIES.map(entry => entry.label)).toEqual([
       'Settings',
@@ -89,9 +89,15 @@ describe('shell', () => {
     ]);
   });
 
+  it('gives every sidebar entry an icon component', () => {
+    for (const entry of SIDEBAR_ENTRIES) {
+      expect(entry.icon).toBeTruthy();
+    }
+  });
+
   it('shows the map by default, with no placeholder mounted', () => {
     const root = renderApp();
-    expect(root.findByType(Tabs).props.current).toBe(MAP_VIEW_ID);
+    expect(root.findByType(TabBar).props.current).toBe(MAP_VIEW_ID);
     expect(root.findByType(WebView)).toBeTruthy();
     expect(root.findAllByType(PlaceholderView)).toHaveLength(0);
   });
@@ -103,7 +109,7 @@ describe('shell', () => {
       pressTab(root, id);
 
       expect(root.findByType(PlaceholderView).props.entryId).toBe(id);
-      expect(root.findByType(Tabs).props.current).toBe(id);
+      expect(root.findByType(TabBar).props.current).toBe(id);
       expect(() => root.findByType(WebView)).toThrow();
     },
   );

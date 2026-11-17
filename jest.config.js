@@ -7,8 +7,10 @@ module.exports = {
   // "Cannot use import statement outside a module". Appending it here
   // keeps the preset's own alternation intact - overriding this key
   // without re-including it would break transform handling for
-  // react-native itself, not just for bobuttons.
+  // react-native itself, not just for bobuttons. react-native-feather is
+  // "type": "module" and its CommonJS entry requires ESM files, so it
+  // needs the same treatment.
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|bobuttons)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|bobuttons|react-native-feather)/)',
   ],
 };

@@ -13,7 +13,9 @@
     "bobuttons": "file:vendor/bobuttons-0.1.0.tgz",
     "react": "19.2.0",
     "react-native": "0.83.10",
+    "react-native-feather": "2.0.0",
     "react-native-safe-area-context": "5.10.1",
+    "react-native-svg": "15.16.1",
     "react-native-webview": "14.0.1"
   },
   "devDependencies": {
@@ -42,13 +44,13 @@
   "bobuttonsProvenance": {
     "package": "bobuttons",
     "version": "0.1.0",
-    "sourceCommit": "de3fe609ea34d5f7e0aab51b0a1fc8f81e89de98",
+    "sourceCommit": "1be8a3efb0048c145c53f5c2542ea6ef14acc745",
     "sourceRepo": "Bobuttons",
     "sourceBranch": "main",
-    "packedDate": "2026-10-27",
+    "packedDate": "2026-11-17",
     "tarballPath": "vendor/bobuttons-0.1.0.tgz",
-    "tarballBytes": 370432,
-    "integrity": "sha512-GHeM1mksuFt1H4r4L/sfHBMVP+gsB8LQz2eUlrUHEZh8Sm5PgvGfBmKAM5g2dkgJE6VaIFdByejoQBvCo9RYFA==",
+    "tarballBytes": 370427,
+    "integrity": "sha512-ZvG7F1mE5wq3lBPmPCOdZtS0dfsGvSoFCicKa3EMiP+VS+H3qG2YrxpfKOjaH2BzrChPO4LbhXt+I/sXCeI24Q==",
     "private": true
   }
 }

@@ -12,10 +12,9 @@
  * `AppShell`'s `header` prop is now `AppHeader`, with `title="Cupboard"`
  * and `locale`/`timeZone` passed explicitly so the rendered (desktop-only)
  * date is Chicago-local rather than defaulting to UTC. `AppShell`'s
- * `sidebar` prop is bobuttons' `Tabs` primitive carrying exactly the three
- * label-only entries Settings, Places, Notes (see `src/shell/navEntries`);
- * `TabBar` is not used because it requires a per-tab icon and icons are
- * out of scope for this ticket (CUPBOARD-2). The single child of
+ * `sidebar` prop is bobuttons' `TabBar` carrying exactly the three
+ * entries Settings, Places, Notes, each with a Feather icon (see
+ * `src/shell/navEntries`). The single child of
  * `AppShell` is one `ViewPane` (never `ViewBody`, which wraps children in
  * a scrollable `Scroll` primitive that would fight the map's pan/zoom),
  * holding either the map (the default view) or the active entry's
@@ -34,8 +33,8 @@
  * placeholder returns to the map, back from the map falls through to the
  * platform's default behaviour (exits).
  *
- * No icons are used anywhere: bobuttons ships none, so this screen sticks
- * to the components that need no icon source.
+ * Icons come from `react-native-feather` (Feather, MIT); bobuttons ships
+ * none, so the icon components are supplied here as `TabBar`'s `icon`.
  *
  * @format
  */
@@ -47,7 +46,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import {AppHeader, AppShell, BobuttonsProvider, Tabs, ViewPane} from 'bobuttons';
+import {AppHeader, AppShell, BobuttonsProvider, TabBar, ViewPane} from 'bobuttons';
 import MapScreen from './src/map/MapScreen';
 import PlaceholderView from './src/views/PlaceholderView';
 import {
@@ -129,7 +128,7 @@ function AppContent() {
         <AppHeader title="Cupboard" locale="en-US" timeZone="America/Chicago" />
       }
       sidebar={
-        <Tabs
+        <TabBar
           tabs={SIDEBAR_ENTRIES}
           current={activeView}
           onChange={setActiveView}
