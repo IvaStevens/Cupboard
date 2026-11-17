@@ -132,6 +132,26 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+## 5. Feather icons and their React Native packages
+
+The sidebar icons (Settings, Places, Notes) are Feather icons, rendered
+by two direct, exact-pinned dependencies. All three are MIT licensed; the
+MIT License text at the end of this file applies to each.
+
+- Icons: Feather, designed by Cole Bemis
+  - Upstream: https://github.com/feathericons/feather
+  - Licence: MIT
+- Package: `react-native-feather`
+  - Version: `2.0.0`
+  - Source: https://www.npmjs.com/package/react-native-feather/v/2.0.0
+  - Licence: MIT
+  - Copyright (c) 2020-present Yiğithan Yücedağ
+- Package: `react-native-svg` (the renderer `react-native-feather` needs)
+  - Version: `15.16.1`
+  - Source: https://www.npmjs.com/package/react-native-svg/v/15.16.1
+  - Licence: MIT
+  - Copyright (c) 2015-2016 Horcrux
+
 ## MIT License text
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

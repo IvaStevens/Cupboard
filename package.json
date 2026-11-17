@@ -13,7 +13,9 @@
     "bobuttons": "file:vendor/bobuttons-0.1.0.tgz",
     "react": "19.2.0",
     "react-native": "0.83.10",
+    "react-native-feather": "2.0.0",
     "react-native-safe-area-context": "5.10.1",
+    "react-native-svg": "15.16.1",
     "react-native-webview": "14.0.1"
   },
   "devDependencies": {
