@@ -80,8 +80,8 @@ bobuttons is private and not on any registry. It is vendored as a tarball,
 many commits, so the source commit and pack date identify the build; both
 are recorded in `package.json` under `bobuttonsProvenance`.
 
-- Source commit (Bobuttons `main`): `de3fe609ea34d5f7e0aab51b0a1fc8f81e89de98`
-- Packed (UTC): `2026-10-27`
+- Source commit (Bobuttons `main`): `1be8a3efb0048c145c53f5c2542ea6ef14acc745`
+- Packed (UTC): `2026-11-17`
 
 bobuttons bundles its own copy of Tamagui, so **never add a `@tamagui/*`
 package** to this app. A second copy makes the app crash at runtime with
