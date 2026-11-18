@@ -47,10 +47,11 @@ import {
   type CircleLayerStyle,
   type PolygonLayerStyle,
 } from './mapConstants';
-import {buildRailColourByName} from './railRoutes';
-import {MAP_LAYERS, type LayerId} from './mapLayers';
-import {buildNeighbourhoodStyleByArea} from './neighbourhoodColours';
-import {PASSPORT_NEIGHBOURHOODS} from '../places/passportData';
+import { buildRailColourByName } from './railRoutes';
+import { MAP_LAYERS, type LayerId } from './mapLayers';
+import { buildNeighbourhoodStyleByArea } from './neighbourhoodColours';
+import { OTHER_AREA_COLOURS } from './otherAreaColours';
+import { PASSPORT_NEIGHBOURHOODS } from '../places/passportData';
 
 export interface MapInitConfigLayer {
   id: LayerId;
@@ -82,13 +83,13 @@ export interface MapInitConfig {
    * CUPBOARD-5: per-`pri_neigh`-area override of `neighbourhoodStyle`,
    * built by src/map/neighbourhoodColours.ts from the 17 passport
    * neighbourhoods' colour pairs. map.html looks `feature.properties.pri_neigh`
-   * up here first, falling back to `neighbourhoodStyle` for the 81 areas
-   * with no passport neighbourhood.
+   * up here first, falling back to `neighbourhoodStyle` only for an area
+   * with no entry at all (passport colours plus otherAreaColours cover all 98).
    */
   neighbourhoodStyleByArea: Record<string, PolygonLayerStyle>;
   busStopsMinZoom: number | null;
-  neighbourhoodPane: {name: string; zIndex: number};
-  creditTexts: {cta: string; chicago: string};
+  neighbourhoodPane: { name: string; zIndex: number };
+  creditTexts: { cta: string; chicago: string };
 }
 
 /** Pure, so a test can assert the config without parsing injected JS. */
@@ -120,13 +121,14 @@ export function buildMapInitConfig(): MapInitConfig {
     neighbourhoodStyleByArea: buildNeighbourhoodStyleByArea(
       PASSPORT_NEIGHBOURHOODS,
       NEIGHBOURHOOD_STYLE,
+      OTHER_AREA_COLOURS,
     ),
     busStopsMinZoom: BUS_STOPS_MIN_ZOOM,
     neighbourhoodPane: {
       name: NEIGHBOURHOOD_PANE_NAME,
       zIndex: NEIGHBOURHOOD_PANE_Z_INDEX,
     },
-    creditTexts: {cta: CTA_CREDIT_TEXT, chicago: CHICAGO_CREDIT_TEXT},
+    creditTexts: { cta: CTA_CREDIT_TEXT, chicago: CHICAGO_CREDIT_TEXT },
   };
 }
 

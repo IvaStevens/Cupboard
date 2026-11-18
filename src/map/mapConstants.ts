@@ -150,6 +150,14 @@ export const NEIGHBOURHOOD_STYLE: PolygonLayerStyle = {
 };
 
 /**
+ * Fill opacity for a polygon that has a passport neighbourhood colour:
+ * the neighbourhood's colour shows clearly while the map underneath stays
+ * readable. The 17 passport background colours are pastels, so the fill
+ * uses the stronger frame colour instead (see neighbourhoodColours.ts).
+ */
+export const PASSPORT_NEIGHBOURHOOD_FILL_OPACITY = 0.4;
+
+/**
  * Credit shown in the Leaflet attribution control, alongside the OSM
  * credit, while any of the four CTA layers is visible (AC22). 'Data
  * provided by CTA' is the form CTA's Developer License Agreement

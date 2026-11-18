@@ -12,15 +12,18 @@
  * rules (The Loop beats South Loop, a Pilsen-only claim colours Lower
  * West Side, Bronzeville colours two areas, an unmatched area is simply
  * absent so the caller's own default applies), and the frameHex ->
- * `color` / backgroundHex -> `fillColor` mapping with `weight`/
- * `fillOpacity` preserved from the caller-supplied default style.
+ * `color` and `fillColor` mapping, with `weight` preserved from the
+ * caller-supplied default style and the shared passport fill opacity.
  *
  * @format
  */
 
-import {buildNeighbourhoodStyleByArea} from '../src/map/neighbourhoodColours';
-import type {PolygonLayerStyle} from '../src/map/mapConstants';
-import type {PassportNeighbourhood} from '../src/places/passportData';
+import { buildNeighbourhoodStyleByArea } from '../src/map/neighbourhoodColours';
+import {
+  PASSPORT_NEIGHBOURHOOD_FILL_OPACITY,
+  type PolygonLayerStyle,
+} from '../src/map/mapConstants';
+import type { PassportNeighbourhood } from '../src/places/passportData';
 
 const DEFAULT_STYLE: PolygonLayerStyle = {
   color: '#8A8A8A',
@@ -30,7 +33,7 @@ const DEFAULT_STYLE: PolygonLayerStyle = {
 };
 
 function fixtureNeighbourhood(
-  overrides: Partial<PassportNeighbourhood> & {id: string; name: string},
+  overrides: Partial<PassportNeighbourhood> & { id: string; name: string },
 ): PassportNeighbourhood {
   return {
     displayTitle: null,
@@ -65,7 +68,7 @@ const SOUTH_LOOP = fixtureNeighbourhood({
   id: 'south-loop',
   name: 'South Loop',
   connectedAreas: ['Loop'],
-  parent: {kind: 'neighbourhood', id: 'the-loop'},
+  parent: { kind: 'neighbourhood', id: 'the-loop' },
   colours: {
     stem: 'southSage',
     backgroundRgb: [218, 235, 218],
@@ -79,7 +82,7 @@ const PILSEN = fixtureNeighbourhood({
   id: 'pilsen',
   name: 'Pilsen',
   connectedAreas: ['Lower West Side'],
-  parent: {kind: 'layerArea', priNeigh: 'Lower West Side'},
+  parent: { kind: 'layerArea', priNeigh: 'Lower West Side' },
   colours: {
     stem: 'pilsenMagenta',
     backgroundRgb: [245, 218, 232],
@@ -121,16 +124,36 @@ describe('buildNeighbourhoodStyleByArea', () => {
       'Lake View': {
         color: LAKEVIEW.colours.frameHex,
         weight: DEFAULT_STYLE.weight,
-        fillColor: LAKEVIEW.colours.backgroundHex,
-        fillOpacity: DEFAULT_STYLE.fillOpacity,
+        fillColor: LAKEVIEW.colours.frameHex,
+        fillOpacity: PASSPORT_NEIGHBOURHOOD_FILL_OPACITY,
       },
     });
   });
 
+  it('colours areas with no passport neighbourhood from the made-up colours, and a passport colour replaces one for the same area', () => {
+    const result = buildNeighbourhoodStyleByArea([LAKEVIEW], DEFAULT_STYLE, {
+      Austin: '#00A676',
+      'Lake View': '#E4572E',
+    });
+    expect(result.Austin).toEqual({
+      color: '#00A676',
+      weight: DEFAULT_STYLE.weight,
+      fillColor: '#00A676',
+      fillOpacity: PASSPORT_NEIGHBOURHOOD_FILL_OPACITY,
+    });
+    expect(result['Lake View'].color).toBe(LAKEVIEW.colours.frameHex);
+    expect(result['Lake View'].fillColor).toBe(LAKEVIEW.colours.frameHex);
+  });
+
   it('maps a normalised alias area (Roscoe Village -> North Center) by the area key alone', () => {
-    const result = buildNeighbourhoodStyleByArea([ROSCOE_VILLAGE], DEFAULT_STYLE);
+    const result = buildNeighbourhoodStyleByArea(
+      [ROSCOE_VILLAGE],
+      DEFAULT_STYLE,
+    );
     expect(Object.keys(result)).toEqual(['North Center']);
-    expect(result['North Center'].fillColor).toBe(ROSCOE_VILLAGE.colours.backgroundHex);
+    expect(result['North Center'].fillColor).toBe(
+      ROSCOE_VILLAGE.colours.frameHex,
+    );
   });
 
   it('colours both of Bronzeville two connected areas with the same colour pair', () => {
@@ -138,33 +161,41 @@ describe('buildNeighbourhoodStyleByArea', () => {
     expect(Object.keys(result).sort()).toEqual(['Douglas', 'Grand Boulevard']);
     expect(result.Douglas).toEqual(result['Grand Boulevard']);
     expect(result.Douglas.color).toBe(BRONZEVILLE.colours.frameHex);
-    expect(result.Douglas.fillColor).toBe(BRONZEVILLE.colours.backgroundHex);
+    expect(result.Douglas.fillColor).toBe(BRONZEVILLE.colours.frameHex);
   });
 
   it('precedence: The Loop beats South Loop on the shared "Loop" area', () => {
-    const result = buildNeighbourhoodStyleByArea([THE_LOOP, SOUTH_LOOP], DEFAULT_STYLE);
+    const result = buildNeighbourhoodStyleByArea(
+      [THE_LOOP, SOUTH_LOOP],
+      DEFAULT_STYLE,
+    );
     expect(result.Loop.color).toBe(THE_LOOP.colours.frameHex);
-    expect(result.Loop.fillColor).toBe(THE_LOOP.colours.backgroundHex);
+    expect(result.Loop.fillColor).toBe(THE_LOOP.colours.frameHex);
 
     // Order independence: the parentless neighbourhood wins regardless
     // of array position, never by position alone.
-    const reversed = buildNeighbourhoodStyleByArea([SOUTH_LOOP, THE_LOOP], DEFAULT_STYLE);
+    const reversed = buildNeighbourhoodStyleByArea(
+      [SOUTH_LOOP, THE_LOOP],
+      DEFAULT_STYLE,
+    );
     expect(reversed.Loop).toEqual(result.Loop);
   });
 
   it('precedence: a sub-neighbourhood colours an area no parentless neighbourhood claims (Pilsen -> Lower West Side)', () => {
     const result = buildNeighbourhoodStyleByArea([PILSEN], DEFAULT_STYLE);
     expect(result['Lower West Side'].color).toBe(PILSEN.colours.frameHex);
-    expect(result['Lower West Side'].fillColor).toBe(PILSEN.colours.backgroundHex);
+    expect(result['Lower West Side'].fillColor).toBe(PILSEN.colours.frameHex);
   });
 
   it('leaves an area with no connected neighbourhood absent, so the caller default applies', () => {
     const result = buildNeighbourhoodStyleByArea([LAKEVIEW], DEFAULT_STYLE);
     expect(result.Albany).toBeUndefined();
-    expect(Object.prototype.hasOwnProperty.call(result, 'Not A Real Area')).toBe(false);
+    expect(
+      Object.prototype.hasOwnProperty.call(result, 'Not A Real Area'),
+    ).toBe(false);
   });
 
-  it('inherits weight and fillOpacity unchanged from the caller-supplied default style', () => {
+  it('inherits weight from the caller-supplied default style and uses the passport fill opacity', () => {
     const customDefault: PolygonLayerStyle = {
       color: '#000000',
       weight: 7,
@@ -173,7 +204,9 @@ describe('buildNeighbourhoodStyleByArea', () => {
     };
     const result = buildNeighbourhoodStyleByArea([LAKEVIEW], customDefault);
     expect(result['Lake View'].weight).toBe(7);
-    expect(result['Lake View'].fillOpacity).toBe(0.9);
+    expect(result['Lake View'].fillOpacity).toBe(
+      PASSPORT_NEIGHBOURHOOD_FILL_OPACITY,
+    );
     // color/fillColor are overridden, never inherited from the default.
     expect(result['Lake View'].color).not.toBe(customDefault.color);
     expect(result['Lake View'].fillColor).not.toBe(customDefault.fillColor);
@@ -186,17 +219,34 @@ describe('buildNeighbourhoodStyleByArea', () => {
       connectedAreas: ['Loop'],
     });
     expect(() =>
-      buildNeighbourhoodStyleByArea([THE_LOOP, conflictingParentless], DEFAULT_STYLE),
+      buildNeighbourhoodStyleByArea(
+        [THE_LOOP, conflictingParentless],
+        DEFAULT_STYLE,
+      ),
     ).toThrow();
   });
 
   it('builds the full 17-neighbourhood dictionary deterministically regardless of call order', () => {
-    const all = [THE_LOOP, SOUTH_LOOP, PILSEN, BRONZEVILLE, LAKEVIEW, ROSCOE_VILLAGE];
+    const all = [
+      THE_LOOP,
+      SOUTH_LOOP,
+      PILSEN,
+      BRONZEVILLE,
+      LAKEVIEW,
+      ROSCOE_VILLAGE,
+    ];
     const first = buildNeighbourhoodStyleByArea(all, DEFAULT_STYLE);
     const second = buildNeighbourhoodStyleByArea(all, DEFAULT_STYLE);
     expect(first).toEqual(second);
     expect(Object.keys(first).sort()).toEqual(
-      ['Loop', 'Lower West Side', 'Douglas', 'Grand Boulevard', 'Lake View', 'North Center'].sort(),
+      [
+        'Loop',
+        'Lower West Side',
+        'Douglas',
+        'Grand Boulevard',
+        'Lake View',
+        'North Center',
+      ].sort(),
     );
   });
 });
