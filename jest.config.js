@@ -13,11 +13,10 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?|bobuttons|react-native-feather)/)',
   ],
-  // CUPBOARD-4's converted map-data assets (~4.3 MB of generated JS
-  // under android/app/src/main/assets/mapdata/) are read with `fs` by
-  // __tests__/mapDataAssets.test.js, never `require`d - excluding the
-  // directory from Jest's haste map keeps Jest from trying to parse
-  // every one of those files as a module on every run.
+  // The converted map-data assets (~5 MB of generated JS under
+  // android/app/src/main/assets/mapdata/) are never `require`d -
+  // excluding the directory from Jest's haste map keeps Jest from trying
+  // to parse every one of those files as a module on every run.
   modulePathIgnorePatterns: [
     '<rootDir>/android/app/src/main/assets/mapdata/',
   ],
