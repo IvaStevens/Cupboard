@@ -3,8 +3,7 @@
 
 /**
  * Developer-run CLI: deterministic, offline production of the three
- * sanitised licence/terms assets committed next to the map data (see
- * MAP-DATA-NOTE.md for the exact command and provenance for each). Reads
+ * sanitised licence/terms assets committed next to the map data. Reads
  * from the gitignored CTA/ and 'Chicago Data Portal/' folders (main
  * checkout only); never fetches anything over the network; never wired
  * into Gradle or Metro.
@@ -178,8 +177,8 @@ function buildChicagoTermsText(paragraphs) {
     "Provenance: this text is lines 36-50 of 'Chicago Data Portal/TIF Information.html'" +
       ' in this repository, which is an HTTrack mirror of the City of Chicago TIF web' +
       " application's disclaimer page, NOT a saved copy of the Data Portal's own Terms of" +
-      ' Use page (the Data Portal landing page for this dataset links to no such page -' +
-      ' see MAP-DATA-NOTE.md). The mirrored page records two capture timestamps in its' +
+      ' Use page (the Data Portal landing page for this dataset links to no such page).' +
+      ' The mirrored page records two capture timestamps in its' +
       ' own HTML comment:',
     '  - webapps1int.cityofchicago.org/ChicagoTif/disclaimer.html, captured 2016-06-22',
     '  - webapps1.cityofchicago.org/ChicagoTif/disclaimer.html, captured 2016-07-05',
@@ -215,8 +214,8 @@ function buildNeighbourhoodsLicenceText() {
     '  licenseId:        SEE_TERMS_OF_USE',
     '',
     'The landing page links to no Terms of Use page, so the authoritative Data Portal' +
-      ' terms document is not on disk and fetching it is out of scope for this ticket' +
-      ' (see MAP-DATA-NOTE.md). The City of Chicago TIF disclaimer committed alongside' +
+      ' terms document is not on disk and fetching it is out of scope for this ticket.' +
+      ' The City of Chicago TIF disclaimer committed alongside' +
       ' this file as chicago-terms-of-use.txt is the only City terms text shipped; its' +
       " USE OF DATA clause's required derivative-use disclaimer is reproduced in this" +
       " app's licences view and in README.md's Licences section.",

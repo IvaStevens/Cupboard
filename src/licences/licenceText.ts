@@ -1,9 +1,7 @@
 /**
  * Licence/attribution text defined ONCE and shared by the in-app
  * licences view (src/views/LicencesView.tsx), the README's "###
- * Licences" section (kept in sync by a drift-guard test, see
- * __tests__/licences.test.tsx) and, for the CTA note, this app's
- * compliance record (see MAP-DATA-NOTE.md).
+ * Licences" section and, for the CTA note, this app's compliance record.
  *
  * @format
  */
@@ -28,7 +26,7 @@ export const CHICAGO_DERIVATIVE_USE_DISCLAIMER =
  * AC20: the Neighborhoods_2012b dataset's licence metadata, read out of
  * the saved Data Portal landing page (not committed - see
  * android/app/src/main/assets/licences/neighbourhoods-dataset-licence.txt
- * for the full record and MAP-DATA-NOTE.md for provenance).
+ * for the full record).
  */
 export const CHICAGO_NEIGHBOURHOODS_LICENCE_RECORD =
   'Neighborhoods_2012b. Attribution: City of Chicago (cityofchicago.org). Licence: See Terms of Use.';

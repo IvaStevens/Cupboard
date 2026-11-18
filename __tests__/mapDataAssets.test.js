@@ -1,9 +1,7 @@
 /**
  * Guards the COMMITTED assets under
  * android/app/src/main/assets/mapdata/ (AC1/AC5/AC6/AC9): exact feature
- * counts against the portal GeoJSON snapshot actually converted (see
- * MAP-DATA-NOTE.md for why these differ from the ticket's original
- * .kml-based counts), none of the forbidden internal/third-party
+ * counts against the portal GeoJSON snapshot actually converted, none of the forbidden internal/third-party
  * markers, no Socrata ':'-prefixed property survives, coordinates
  * rounded to at most 6 decimal places, and no pretty-print whitespace.
  *

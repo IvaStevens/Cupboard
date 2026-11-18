@@ -24,10 +24,8 @@
 import {RAIL_ROUTE_COLOURS, type RailColourKey} from './mapConstants';
 
 /**
- * All 16 distinct `lines` values present in the source data (both
- * CTARailLines.kml's 16 `<name>` values and the portal rail-lines
- * GeoJSON's 16 `lines` values - see MAP-DATA-NOTE.md for why the two
- * snapshots differ in segment COUNT but not in these 16 names).
+ * All 16 distinct `lines` values present in the portal rail-lines
+ * GeoJSON.
  */
 export const RAIL_LINE_NAMES = [
   'Red Line',

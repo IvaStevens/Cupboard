@@ -98,9 +98,7 @@ npm run typecheck
   City of Chicago terms shipped with the app (generated; see "Map data"
   below).
 - `tools/` - the developer-run conversion scripts that produce the above
-  two asset directories, and `MAP-DATA-NOTE.md` at the repo root, which
-  documents them in full (provenance, exact commands, what was dropped and
-  why).
+  two asset directories (see "Map data" below).
 
 ### Troubleshooting the map
 
@@ -148,11 +146,15 @@ cat node_modules/leaflet/dist/leaflet.js >> android/app/src/main/assets/leaflet/
 
 The five map layers are converted, once, from source GeoJSON files that are
 **not committed** (they live in a gitignored `Chicago Data Portal/` folder
-in the main checkout only). See `MAP-DATA-NOTE.md` at the repo root for full
-per-file provenance, the exact conversion commands, the property whitelist
-applied to each layer, and why a converted layer's feature count differs
-from the count the ticket originally named. To regenerate the committed
-assets after refreshing that source folder:
+in the main checkout only): the CTA rail lines, rail stations, bus routes and
+bus stops exports, and the City's `Neighborhoods_2012b` dataset. Each layer
+keeps only a short property whitelist, coordinates are rounded to 6 decimal
+places, and the converter checks the feature count of every file (153 rail
+lines, 145 rail stations, 127 bus routes, 10,760 bus stops, 98
+neighbourhoods). The saved Data Portal pages for the four CTA datasets are not
+on disk, so their portal terms are unconfirmed; the CTA Developer License
+Agreement is the licence shipped for them. To regenerate the committed assets
+after refreshing the source folder:
 
 ```
 npm run convert:map-data
@@ -221,8 +223,7 @@ packages bobuttons bundles, and `react-native-svg`.
 
 **CTA data.** Rail and bus map layers are provided by the Chicago Transit
 Authority (CTA) under its Developer License Agreement, committed verbatim
-(re-encoded to UTF-8, with the three CTA-logo `<img>` references removed -
-see `MAP-DATA-NOTE.md`) at
+(re-encoded to UTF-8, with the three CTA-logo `<img>` references removed) at
 `android/app/src/main/assets/licences/cta-developer-license-agreement.html`.
 This app is not affiliated with, endorsed by or sponsored by CTA; "Data
 provided by CTA" (CTA licence section III.6's blessed optional credit) is
@@ -232,7 +233,7 @@ shown in the map's attribution control while any CTA layer is visible.
 Chicago's `Neighborhoods_2012b` dataset (attribution "City of Chicago",
 http://www.cityofchicago.org, licence "See Terms of Use") - see
 `android/app/src/main/assets/licences/neighbourhoods-dataset-licence.txt`
-and `MAP-DATA-NOTE.md` for the full record. "Data provided by City of
+for the full record. "Data provided by City of
 Chicago" is shown in the map's attribution control while that layer is
 visible. The City's Terms of Use (committed at
 `android/app/src/main/assets/licences/chicago-terms-of-use.txt`) require

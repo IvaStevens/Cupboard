@@ -11,9 +11,8 @@
  * bespoke RN primitive here.
  *
  * All three licence/credit texts are imported from
- * src/licences/licenceText.ts, the single source shared with README.md
- * (see __tests__/licences.test.tsx's drift guard) - nothing here is a
- * copy that could drift from that file.
+ * src/licences/licenceText.ts, so nothing here is a copy that could drift
+ * from that file.
  *
  * @format
  */

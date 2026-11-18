@@ -8,4 +8,4 @@ Values read from the saved landing page 'Chicago Data Portal/Neighborhoods_2012b
   licence:          See Terms of Use
   licenseId:        SEE_TERMS_OF_USE
 
-The landing page links to no Terms of Use page, so the authoritative Data Portal terms document is not on disk and fetching it is out of scope for this ticket (see MAP-DATA-NOTE.md). The City of Chicago TIF disclaimer committed alongside this file as chicago-terms-of-use.txt is the only City terms text shipped; its USE OF DATA clause's required derivative-use disclaimer is reproduced in this app's licences view and in README.md's Licences section.
+The landing page links to no Terms of Use page, so the authoritative Data Portal terms document is not on disk and fetching it is out of scope for this ticket. The City of Chicago TIF disclaimer committed alongside this file as chicago-terms-of-use.txt is the only City terms text shipped; its USE OF DATA clause's required derivative-use disclaimer is reproduced in this app's licences view and in README.md's Licences section.

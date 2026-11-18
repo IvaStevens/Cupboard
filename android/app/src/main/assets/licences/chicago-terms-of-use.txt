@@ -1,7 +1,7 @@
 City of Chicago Terms of Use - DISCLAIMER OF LIABILITY, USE OF DATA,
 RESERVATION OF RIGHTS and INDEMNITY
 
-Provenance: this text is lines 36-50 of 'Chicago Data Portal/TIF Information.html' in this repository, which is an HTTrack mirror of the City of Chicago TIF web application's disclaimer page, NOT a saved copy of the Data Portal's own Terms of Use page (the Data Portal landing page for this dataset links to no such page - see MAP-DATA-NOTE.md). The mirrored page records two capture timestamps in its own HTML comment:
+Provenance: this text is lines 36-50 of 'Chicago Data Portal/TIF Information.html' in this repository, which is an HTTrack mirror of the City of Chicago TIF web application's disclaimer page, NOT a saved copy of the Data Portal's own Terms of Use page (the Data Portal landing page for this dataset links to no such page). The mirrored page records two capture timestamps in its own HTML comment:
   - webapps1int.cityofchicago.org/ChicagoTif/disclaimer.html, captured 2016-06-22
   - webapps1.cityofchicago.org/ChicagoTif/disclaimer.html, captured 2016-07-05
 This text is committed verbatim and unaltered apart from stripping the source's HTML markup; no part of the surrounding page chrome or its TIF Information_files/ directory (including chicago.gov-logo_H_lB.png and the bootstrap/jQuery/USWDS/font-awesome assets) is included.

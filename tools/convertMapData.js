@@ -4,16 +4,16 @@
 /**
  * Developer-run CLI: reads the five portal GeoJSON files from the
  * gitignored 'Chicago Data Portal/' folder (present only in the main
- * checkout - see MAP-DATA-NOTE.md) and writes the five committed
+ * checkout) and writes the five committed
  * android/app/src/main/assets/mapdata/*.geojson.js files. Never wired
  * into Gradle or Metro - re-run by hand (see package.json's
- * "convert:map-data" script and MAP-DATA-NOTE.md's exact commands) when
+ * "convert:map-data" script) when
  * the source data is refreshed.
  *
  * Fails loudly, before writing anything, if a source file is missing or
- * its feature count does not match the count recorded here (and in
- * MAP-DATA-NOTE.md) - a silent count drift is exactly the kind of error
- * AC1 requires the data note to explain, not swallow.
+ * its feature count does not match the count recorded here - a silent
+ * count drift is exactly the kind of error that should not be
+ * swallowed.
  *
  * Usage:
  *   node tools/convertMapData.js "<path to 'Chicago Data Portal'>"
@@ -32,9 +32,8 @@ const {
 
 /**
  * Source file names, the asset file each becomes, and the feature count
- * verified against the portal snapshot named in MAP-DATA-NOTE.md. These
- * are the four CTA portal exports plus the neighbourhoods file - NOT the
- * CTA/*.kml or CTA/*.kmz files, which are unused (see MAP-DATA-NOTE.md).
+ * verified against the portal snapshot. These are the four CTA portal
+ * exports plus the neighbourhoods file.
  */
 const SOURCE_SPECS = [
   {
@@ -115,7 +114,7 @@ function main() {
     if (raw.features.length !== spec.expectedFeatureCount) {
       console.error(
         `convertMapData: ${spec.sourceFile} has ${raw.features.length} features, expected ${spec.expectedFeatureCount}. ` +
-          'Update MAP-DATA-NOTE.md (and the expected count here) if this is an intentional refresh.',
+          'Update the expected count here if this is an intentional refresh.',
       );
       process.exitCode = 1;
       return;

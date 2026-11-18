@@ -1,9 +1,8 @@
 'use strict';
 
 /**
- * Pure GeoJSON normaliser for the CUPBOARD-4 map layers. No KML parsing -
- * all five source files are already GeoJSON (see MAP-DATA-NOTE.md for
- * where they came from and why). This module touches no filesystem; see
+ * Pure GeoJSON normaliser for the CUPBOARD-4 map layers. All five source
+ * files are GeoJSON from the Chicago Data Portal. This module touches no filesystem; see
  * tools/convertMapData.js for the developer-run CLI that reads the real
  * source files and writes the committed assets.
  *
