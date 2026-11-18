@@ -2,9 +2,9 @@
 'use strict';
 
 /**
- * Developer-run CLI: reads the five portal GeoJSON files from the
+ * Developer-run CLI: reads the six portal GeoJSON files from the
  * gitignored 'Chicago Data Portal/' folder (present only in the main
- * checkout) and writes the five committed
+ * checkout) and writes the six committed
  * android/app/src/main/assets/mapdata/*.geojson.js files. Never wired
  * into Gradle or Metro - re-run by hand (see package.json's
  * "convert:map-data" script) when
@@ -33,7 +33,7 @@ const {
 /**
  * Source file names, the asset file each becomes, and the feature count
  * verified against the portal snapshot. These are the four CTA portal
- * exports plus the neighbourhoods file.
+ * exports plus the neighbourhoods and bike routes files.
  */
 const SOURCE_SPECS = [
   {
@@ -65,6 +65,12 @@ const SOURCE_SPECS = [
     sourceFile: 'Neighborhoods_2012b_20261117.geojson',
     assetFile: 'chicago-neighbourhoods.geojson.js',
     expectedFeatureCount: 98,
+  },
+  {
+    id: 'chicago-bike-routes',
+    sourceFile: 'Bike_Routes_20261117.geojson',
+    assetFile: 'chicago-bike-routes.geojson.js',
+    expectedFeatureCount: 1008,
   },
 ];
 

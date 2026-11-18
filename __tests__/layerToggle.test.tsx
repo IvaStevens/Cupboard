@@ -1,6 +1,6 @@
 /**
  * CUPBOARD-4's riskiest new UI logic: default-off, toggle-driven
- * show/hide for each of the five layers (AC11/AC14), that toggling never
+ * show/hide for each layer (AC11/AC14), that toggling never
  * changes which view ViewPane shows, that layer state survives a
  * placeholder round trip (AC11), and that a remount (here: the WebView's
  * `init-ok` heartbeat, which is what both onRenderProcessGone and a
@@ -93,7 +93,7 @@ function webviewInstance(root: ReactTestInstance): {
 }
 
 describe('layer toggle (AC11/AC14)', () => {
-  it('all five layers default OFF', () => {
+  it('all layers default OFF', () => {
     const app = renderApp();
     const text = JSON.stringify(app.toJSON());
     for (const layer of MAP_LAYERS) {

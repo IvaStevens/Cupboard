@@ -1,6 +1,6 @@
 /**
  * The map layer picker (AC14): a bobuttons `Tabs` sub-selector listing
- * the five CUPBOARD-4 map layers, rendered beneath `TabBar` in
+ * the map layers, rendered beneath `TabBar` in
  * AppShell's sidebar (see App.tsx). `Tabs` is the app's one SUB
  * selector - it never decides which view `ViewPane` shows; only
  * `TabBar` (the MAIN selector) does that.
@@ -39,7 +39,7 @@ import * as React from 'react';
 import {Tabs} from 'bobuttons';
 import {MAP_LAYERS, type LayerId} from '../map/mapLayers';
 
-/** Matches none of the five real layer ids - see the header comment. */
+/** Matches none of the real layer ids - see the header comment. */
 const LAYER_PICKER_SENTINEL = '__cupboard_no_layer_selected__';
 
 export interface LayerPickerProps {

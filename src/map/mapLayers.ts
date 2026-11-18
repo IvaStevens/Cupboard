@@ -1,5 +1,5 @@
 /**
- * The five CUPBOARD-4 map layers: ids, display labels, which converted
+ * The map layers: ids, display labels, which converted
  * asset file each loads, geometry kind and which credit line (AC22)
  * showing it is responsible for.
  *
@@ -17,12 +17,13 @@ export type LayerId =
   | 'cta-rail-stations'
   | 'cta-bus-routes'
   | 'cta-bus-stops'
-  | 'chicago-neighbourhoods';
+  | 'chicago-neighbourhoods'
+  | 'chicago-bike-routes';
 
 export type LayerGeometryKind = 'line' | 'point' | 'polygon';
 
-/** Which of the two credit lines (AC22) a layer belongs to. */
-export type CreditGroup = 'cta' | 'neighbourhoods';
+/** Which of the two credit lines (AC22) a layer belongs to: the CTA layers, or the City of Chicago datasets. */
+export type CreditGroup = 'cta' | 'chicago';
 
 export interface MapLayerDef {
   id: LayerId;
@@ -33,7 +34,7 @@ export interface MapLayerDef {
   creditGroup: CreditGroup;
 }
 
-/** The five layers, in the order the layer picker lists them. All default OFF (AC11). */
+/** The six layers, in the order the layer picker lists them. All default OFF (AC11). */
 export const MAP_LAYERS: ReadonlyArray<MapLayerDef> = [
   {
     id: 'cta-rail-lines',
@@ -68,7 +69,14 @@ export const MAP_LAYERS: ReadonlyArray<MapLayerDef> = [
     label: 'Neighbourhoods',
     assetFile: 'chicago-neighbourhoods.geojson.js',
     kind: 'polygon',
-    creditGroup: 'neighbourhoods',
+    creditGroup: 'chicago',
+  },
+  {
+    id: 'chicago-bike-routes',
+    label: 'Bike routes',
+    assetFile: 'chicago-bike-routes.geojson.js',
+    kind: 'line',
+    creditGroup: 'chicago',
   },
 ];
 

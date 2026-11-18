@@ -86,6 +86,12 @@ export const RAIL_ROUTE_COLOURS: Record<RailColourKey, string> = {
  */
 export const BUS_ROUTE_COLOUR = '#4A4A4A';
 
+/** One uniform colour for Chicago bike routes, distinct from all 8 rail colours and from the bus grey. */
+export const BIKE_ROUTE_COLOUR = '#B5179E';
+
+/** Stroke weight for bike-route polylines (px). */
+export const BIKE_ROUTE_WEIGHT = 2;
+
 /** Stroke weight for rail-line polylines (px). */
 export const RAIL_LINE_WEIGHT = 3;
 
@@ -142,7 +148,7 @@ export const NEIGHBOURHOOD_STYLE: PolygonLayerStyle = {
  */
 export const CTA_CREDIT_TEXT = 'Data provided by CTA';
 
-/** Credit shown while the neighbourhoods layer is visible (AC22). */
+/** Credit shown while a City of Chicago layer (neighbourhoods, bike routes) is visible (AC22). */
 export const CHICAGO_CREDIT_TEXT = 'Data provided by City of Chicago';
 
 /**

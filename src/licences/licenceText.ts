@@ -31,6 +31,10 @@ export const CHICAGO_DERIVATIVE_USE_DISCLAIMER =
 export const CHICAGO_NEIGHBOURHOODS_LICENCE_RECORD =
   'Neighborhoods_2012b. Attribution: City of Chicago (cityofchicago.org). Licence: See Terms of Use.';
 
+/** The Bike Routes dataset's licence metadata, read out of its saved Data Portal page (record in android/app/src/main/assets/licences/bike-routes-dataset-licence.txt). */
+export const CHICAGO_BIKE_ROUTES_LICENCE_RECORD =
+  'Bike Routes - Map. Attribution: City of Chicago (chicago.gov). Licence: See Terms of Use.';
+
 /**
  * AC22/III.6: the CTA credit note shown in the licences view, pointing
  * at the shipped agreement rather than restating its text (the

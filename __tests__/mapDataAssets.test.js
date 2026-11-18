@@ -52,6 +52,11 @@ const LAYER_FILES = [
     layerId: 'chicago-neighbourhoods',
     expectedCount: 98,
   },
+  {
+    assetFile: 'chicago-bike-routes.geojson.js',
+    layerId: 'chicago-bike-routes',
+    expectedCount: 1008,
+  },
 ];
 
 const FORBIDDEN_MARKERS = [

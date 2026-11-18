@@ -15,7 +15,7 @@
  * `sidebar` prop is a Fragment of bobuttons' `TabBar` (the three entries
  * Settings, Places, Notes, each with a Feather icon - see
  * `src/shell/navEntries`) followed by `LayerPicker` (CUPBOARD-4's bobuttons
- * `Tabs` sub-selector listing the five map layers - see
+ * `Tabs` sub-selector listing the map layers - see
  * `src/shell/LayerPicker`). `TabBar` is the app's one MAIN selector (it
  * alone decides which view `ViewPane` shows); `LayerPicker` never does -
  * activating one of its items only flips that layer's membership in
@@ -91,10 +91,10 @@ function AppContent() {
   const insets = useSafeAreaInsets();
   const [activeView, setActiveView] = useState<ViewId>(MAP_VIEW_ID);
 
-  // CUPBOARD-4: the five map layers, owned here (above ViewPane) rather
+  // CUPBOARD-4: the map layers, owned here (above ViewPane) rather
   // than inside MapScreen, so toggle state survives the map's own
   // unmount/remount when the user switches to a placeholder and back
-  // (AC11). Both start empty - all five layers default OFF on first
+  // (AC11). Both start empty - all layers default OFF on first
   // launch (AC11), matching CUPBOARD-1's launch state exactly.
   const [enabledLayerIds, setEnabledLayerIds] = useState<ReadonlySet<LayerId>>(
     () => new Set<LayerId>(),

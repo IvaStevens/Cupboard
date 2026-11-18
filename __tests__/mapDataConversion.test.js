@@ -158,7 +158,7 @@ describe('wrapAsRegisterLayerScript', () => {
 });
 
 describe('LAYER_WHITELISTS', () => {
-  it('defines a whitelist for all five layers', () => {
+  it('defines a whitelist for every layer', () => {
     expect(Object.keys(LAYER_WHITELISTS).sort()).toEqual(
       [
         'cta-rail-lines',
@@ -166,6 +166,7 @@ describe('LAYER_WHITELISTS', () => {
         'cta-bus-routes',
         'cta-bus-stops',
         'chicago-neighbourhoods',
+        'chicago-bike-routes',
       ].sort(),
     );
   });

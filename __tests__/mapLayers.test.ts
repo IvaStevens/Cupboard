@@ -85,17 +85,18 @@ describe('bus route colour', () => {
 });
 
 describe('map layers', () => {
-  it('defines exactly the five required layers, in picker order', () => {
+  it('defines exactly the six layers, in picker order', () => {
     expect(MAP_LAYERS.map(layer => layer.id)).toEqual([
       'cta-rail-lines',
       'cta-rail-stations',
       'cta-bus-routes',
       'cta-bus-stops',
       'chicago-neighbourhoods',
+      'chicago-bike-routes',
     ]);
   });
 
-  it('assigns each of the four CTA layers to the cta credit group and neighbourhoods to its own', () => {
+  it('assigns each of the four CTA layers to the cta credit group and the two City of Chicago layers to the chicago group', () => {
     const ctaLayers = MAP_LAYERS.filter(layer => layer.creditGroup === 'cta');
     expect(ctaLayers.map(layer => layer.id)).toEqual([
       'cta-rail-lines',
@@ -103,11 +104,12 @@ describe('map layers', () => {
       'cta-bus-routes',
       'cta-bus-stops',
     ]);
-    const neighbourhoodLayers = MAP_LAYERS.filter(
-      layer => layer.creditGroup === 'neighbourhoods',
+    const chicagoLayers = MAP_LAYERS.filter(
+      layer => layer.creditGroup === 'chicago',
     );
-    expect(neighbourhoodLayers.map(layer => layer.id)).toEqual([
+    expect(chicagoLayers.map(layer => layer.id)).toEqual([
       'chicago-neighbourhoods',
+      'chicago-bike-routes',
     ]);
   });
 
@@ -116,7 +118,7 @@ describe('map layers', () => {
     expect(new Set(assetFiles).size).toBe(assetFiles.length);
   });
 
-  it('isLayerId recognises exactly the five real ids', () => {
+  it('isLayerId recognises exactly the real ids', () => {
     for (const id of MAP_LAYER_IDS) {
       expect(isLayerId(id)).toBe(true);
     }

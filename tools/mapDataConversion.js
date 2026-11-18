@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Pure GeoJSON normaliser for the CUPBOARD-4 map layers. All five source
- * files are GeoJSON from the Chicago Data Portal. This module touches no filesystem; see
+ * Pure GeoJSON normaliser for the map layers. All source files are GeoJSON
+ * from the Chicago Data Portal. This module touches no filesystem; see
  * tools/convertMapData.js for the developer-run CLI that reads the real
  * source files and writes the committed assets.
  *
@@ -48,6 +48,14 @@ const LAYER_WHITELISTS = Object.freeze({
     'dir',
   ]),
   'chicago-neighbourhoods': Object.freeze(['pri_neigh', 'sec_neigh']),
+  'chicago-bike-routes': Object.freeze([
+    'street',
+    'st_name',
+    'displayrou',
+    'oneway_dir',
+    'f_street',
+    't_street',
+  ]),
 });
 
 function roundCoordinateValue(value) {

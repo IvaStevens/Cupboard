@@ -14,7 +14,7 @@
  * `onNavigationStateChange` (no `onReceivedTitle` override exists, so a
  * post-load `document.title` change emits no event).
  *
- * CUPBOARD-4 KEPT THOSE FLAGS UNSET ON PURPOSE. The five map-data assets
+ * CUPBOARD-4 KEPT THOSE FLAGS UNSET ON PURPOSE. The map-data assets
  * (android/app/src/main/assets/mapdata/*.geojson.js) are NOT fetched
  * with `fetch`/`XHR` from the page - that IS blocked from a file://
  * document without `allowFileAccessFromFileURLs`/
@@ -93,7 +93,7 @@ function shouldAllowNavigation(request: ShouldStartLoadRequest): boolean {
 }
 
 export interface MapScreenProps {
-  /** Which of the five CUPBOARD-4 layers the picker currently shows as "on" - see App.tsx. Defaults to none, matching AC11's launch state. */
+  /** Which of the CUPBOARD-4 layers the picker currently shows as "on" - see App.tsx. Defaults to none, matching AC11's launch state. */
   enabledLayerIds?: ReadonlySet<LayerId>;
   /** Called when map.html reports a layer's data failed to load, so the picker can show "(unavailable)" and offer a retry. Defaults to a no-op. */
   onLayerError?: (id: LayerId) => void;

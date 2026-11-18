@@ -151,7 +151,7 @@
           }).addTo(map);
 
           // ---------------------------------------------------------
-          // CUPBOARD-4: five independently toggleable data layers.
+          // CUPBOARD-4: independently toggleable data layers.
           //
           // A custom pane for the neighbourhood polygons, given a
           // z-index BELOW the default overlay pane (400, where rail
@@ -212,6 +212,18 @@
                 },
               });
             }
+            if (id === 'chicago-bike-routes') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                style: function () {
+                  return {
+                    color: config.bikeRouteColour,
+                    weight: config.bikeRouteWeight,
+                    interactive: false,
+                  };
+                },
+              });
+            }
             if (id === 'cta-rail-stations') {
               return L.geoJSON(geojson, {
                 interactive: false,
@@ -248,7 +260,7 @@
           // Recomputed, not toggled, on every call.
           function updateCredits() {
             var ctaVisible = false;
-            var neighbourhoodsVisible = false;
+            var chicagoVisible = false;
             desiredLayerIds.forEach(function (id) {
               var entry = layersById[id];
               if (!entry || entry.state !== 'loaded') {
@@ -256,17 +268,17 @@
               }
               if (entry.config.creditGroup === 'cta') {
                 ctaVisible = true;
-              } else if (entry.config.creditGroup === 'neighbourhoods') {
-                neighbourhoodsVisible = true;
+              } else if (entry.config.creditGroup === 'chicago') {
+                chicagoVisible = true;
               }
             });
             map.attributionControl.removeAttribution(config.creditTexts.cta);
-            map.attributionControl.removeAttribution(config.creditTexts.neighbourhoods);
+            map.attributionControl.removeAttribution(config.creditTexts.chicago);
             if (ctaVisible) {
               map.attributionControl.addAttribution(config.creditTexts.cta);
             }
-            if (neighbourhoodsVisible) {
-              map.attributionControl.addAttribution(config.creditTexts.neighbourhoods);
+            if (chicagoVisible) {
+              map.attributionControl.addAttribution(config.creditTexts.chicago);
             }
           }
 

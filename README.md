@@ -21,7 +21,7 @@ connection.
 ### Map layers
 
 Below the side panel's Settings/Places/Notes selector is a second list,
-the **layer picker**, with five CTA/Chicago map layers, each independently
+the **layer picker**, with six CTA/Chicago map layers, each independently
 toggleable and off by default:
 
 - **Rail lines** - CTA 'L' tracks, coloured by route (Red, Blue, Brown,
@@ -32,6 +32,8 @@ toggleable and off by default:
 - **Bus stops** - 10,760 stops; see "Bus stops performance" below.
 - **Neighbourhoods** - Chicago's 98 named neighbourhoods, rendered beneath
   the four CTA layers.
+- **Bike routes** - the City's 1,008 bike route segments in one uniform
+  colour.
 
 Tapping a layer's name toggles it on/off immediately - the label shows
 `(on)`, `(off)`, or `(unavailable)` if that layer's data failed to load (tap
@@ -83,7 +85,7 @@ npm run typecheck
 
 - `App.tsx` - the bobuttons `AppShell`: header, side panel, and the active view.
 - `src/map/` - the Leaflet map: view constants (Chicago's coordinates, zoom,
-  tile URL, attribution, layer colours/styles/credits), the five map layers'
+  tile URL, attribution, layer colours/styles/credits), the six map layers'
   definitions (`mapLayers.ts`), the rail route colour rule (`railRoutes.ts`),
   the WebView screen, and the init script.
 - `src/shell/` - the side panel's main selector data and `LayerPicker.tsx`,
@@ -92,7 +94,7 @@ npm run typecheck
 - `src/licences/` - licence/credit text shared by `LicencesView.tsx` and
   this README.
 - `android/app/src/main/assets/leaflet/` - `map.html` and the vendored Leaflet.
-- `android/app/src/main/assets/mapdata/` - the five converted map layers
+- `android/app/src/main/assets/mapdata/` - the six converted map layers
   (generated; see "Map data" below - never edit these by hand).
 - `android/app/src/main/assets/licences/` - the CTA agreement and City of
   Chicago terms shipped with the app, copied once from the source folders
@@ -144,14 +146,14 @@ cat node_modules/leaflet/dist/leaflet.js >> android/app/src/main/assets/leaflet/
 
 ### Map data
 
-The five map layers are converted, once, from source GeoJSON files that are
+The six map layers are converted, once, from source GeoJSON files that are
 **not committed** (they live in a gitignored `Chicago Data Portal/` folder
 in the main checkout only): the CTA rail lines, rail stations, bus routes and
-bus stops exports, and the City's `Neighborhoods_2012b` dataset. Each layer
+bus stops exports, the City's `Neighborhoods_2012b` dataset, and its Bike Routes dataset. Each layer
 keeps only a short property whitelist, coordinates are rounded to 6 decimal
 places, and the converter checks the feature count of every file (153 rail
 lines, 145 rail stations, 127 bus routes, 10,760 bus stops, 98
-neighbourhoods). The saved Data Portal pages for the four CTA datasets are not
+neighbourhoods, 1,008 bike routes). The saved Data Portal pages for the four CTA datasets are not
 on disk, so their portal terms are unconfirmed; the CTA Developer License
 Agreement is the licence shipped for them. To regenerate the committed assets
 after refreshing the source folder:
@@ -175,14 +177,15 @@ subresource, exactly like `leaflet.js`/`leaflet.css` already are.
 `originWhitelist`/`shouldAllowNavigation` continue to gate only top-level
 navigation, unaffected by this.
 
-**Asset size.** The five committed layers total **~4.3 MB**
+**Asset size.** The six committed layers total **~5.1 MB**
 (`android/app/src/main/assets/mapdata/`, coordinates rounded to 6 decimal
-places and serialised without pretty-print whitespace); the three licence
-assets (`android/app/src/main/assets/licences/`) add another ~36 KB.
+places and serialised without pretty-print whitespace); the four licence
+assets (`android/app/src/main/assets/licences/`) add another ~25 KB.
 
 Measured debug-APK size delta, from two clean (`rm -rf android/app/build
 android/build && ./gradlew assembleDebug`) builds at the commit before this
-ticket's assets were added and after:
+ticket's assets were added and after (measured before the bike routes layer,
+about 0.7 MB of raw JSON, was added):
 
 | | Size |
 | --- | --- |
@@ -230,11 +233,13 @@ shown in the map's attribution control while any CTA layer is visible.
 
 **City of Chicago data.** The Neighbourhoods layer uses the City of
 Chicago's `Neighborhoods_2012b` dataset (attribution "City of Chicago",
-http://www.cityofchicago.org, licence "See Terms of Use") - see
+http://www.cityofchicago.org, licence "See Terms of Use") and the Bike
+Routes layer uses its Bike Routes dataset (attribution "City of Chicago",
+https://www.chicago.gov, licence "See Terms of Use") - see
 `android/app/src/main/assets/licences/neighbourhoods-dataset-licence.txt`
-for the full record. "Data provided by City of
-Chicago" is shown in the map's attribution control while that layer is
-visible. The City's Terms of Use (committed at
+and `bike-routes-dataset-licence.txt` for the full records. "Data provided
+by City of Chicago" is shown in the map's attribution control while either
+layer is visible. The City's Terms of Use (committed at
 `android/app/src/main/assets/licences/chicago-terms-of-use.txt`) require
 this derivative-use disclaimer wherever the app "can be accessed or
 downloaded":

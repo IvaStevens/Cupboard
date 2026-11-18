@@ -20,6 +20,7 @@
 import * as React from 'react';
 import {Button, SettingsHint, SettingsLayout, SettingsSection, ViewToolbar} from 'bobuttons';
 import {
+  CHICAGO_BIKE_ROUTES_LICENCE_RECORD,
   CHICAGO_DERIVATIVE_USE_DISCLAIMER,
   CHICAGO_NEIGHBOURHOODS_LICENCE_RECORD,
   CTA_CREDIT_NOTE,
@@ -49,6 +50,7 @@ function LicencesView(props: LicencesViewProps): React.ReactElement {
         </SettingsSection>
         <SettingsSection title="City of Chicago data">
           <SettingsHint>{CHICAGO_NEIGHBOURHOODS_LICENCE_RECORD}</SettingsHint>
+          <SettingsHint>{CHICAGO_BIKE_ROUTES_LICENCE_RECORD}</SettingsHint>
           <SettingsHint>{CHICAGO_DERIVATIVE_USE_DISCLAIMER}</SettingsHint>
         </SettingsSection>
       </SettingsLayout>

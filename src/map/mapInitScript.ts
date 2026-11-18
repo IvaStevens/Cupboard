@@ -3,7 +3,7 @@
  * `buildMapInitScript()` (the one-time `window.initLeafletMap(<config>)`
  * call, run once per WebView load/reload) and `buildSetLayersScript()`
  * (the repeatable `window.cupboardSetLayers(<ids>)` call that drives
- * CUPBOARD-4's five toggleable layers).
+ * CUPBOARD-4 toggleable layers).
  *
  * This module is component-free: it imports no react-native-webview and
  * depends on nothing but mapConstants/railRoutes/mapLayers, so it is
@@ -21,6 +21,8 @@
  */
 
 import {
+  BIKE_ROUTE_COLOUR,
+  BIKE_ROUTE_WEIGHT,
   BUS_ROUTE_COLOUR,
   BUS_ROUTE_WEIGHT,
   BUS_STOP_STYLE,
@@ -67,12 +69,14 @@ export interface MapInitConfig {
   railLineWeight: number;
   busRouteColour: string;
   busRouteWeight: number;
+  bikeRouteColour: string;
+  bikeRouteWeight: number;
   stationStyle: CircleLayerStyle;
   busStopStyle: CircleLayerStyle;
   neighbourhoodStyle: PolygonLayerStyle;
   busStopsMinZoom: number | null;
   neighbourhoodPane: {name: string; zIndex: number};
-  creditTexts: {cta: string; neighbourhoods: string};
+  creditTexts: {cta: string; chicago: string};
 }
 
 /** Pure, so a test can assert the config without parsing injected JS. */
@@ -96,6 +100,8 @@ export function buildMapInitConfig(): MapInitConfig {
     railLineWeight: RAIL_LINE_WEIGHT,
     busRouteColour: BUS_ROUTE_COLOUR,
     busRouteWeight: BUS_ROUTE_WEIGHT,
+    bikeRouteColour: BIKE_ROUTE_COLOUR,
+    bikeRouteWeight: BIKE_ROUTE_WEIGHT,
     stationStyle: RAIL_STATION_STYLE,
     busStopStyle: BUS_STOP_STYLE,
     neighbourhoodStyle: NEIGHBOURHOOD_STYLE,
@@ -104,7 +110,7 @@ export function buildMapInitConfig(): MapInitConfig {
       name: NEIGHBOURHOOD_PANE_NAME,
       zIndex: NEIGHBOURHOOD_PANE_Z_INDEX,
     },
-    creditTexts: {cta: CTA_CREDIT_TEXT, neighbourhoods: CHICAGO_CREDIT_TEXT},
+    creditTexts: {cta: CTA_CREDIT_TEXT, chicago: CHICAGO_CREDIT_TEXT},
   };
 }
 
