@@ -76,12 +76,11 @@ describe('shell', () => {
     expect(header.type).toBe(AppHeader);
     expect(header.props.title).toBe('Cupboard');
 
-    const sidebar = shell.props.sidebar as unknown as {
-      type: unknown;
-      props: {tabs: unknown};
-    };
-    expect(sidebar.type).toBe(TabBar);
-    expect(sidebar.props.tabs).toEqual(SIDEBAR_ENTRIES);
+    // CUPBOARD-4: `shell.props.sidebar` is now a Fragment (TabBar plus
+    // the layer picker), so TabBar's own props are asserted via
+    // `root.findByType` instead of reading `sidebar.props` directly.
+    const tabBar = root.findByType(TabBar);
+    expect(tabBar.props.tabs).toEqual(SIDEBAR_ENTRIES);
     expect(SIDEBAR_ENTRIES.map(entry => entry.label)).toEqual([
       'Settings',
       'Places',

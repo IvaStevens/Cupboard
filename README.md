@@ -12,11 +12,36 @@ The side panel switches between the app's sections:
 
 - **Places** - the points of interest you have found around the city.
 - **Notes** - the notes you have saved about them.
-- **Settings** - app preferences.
+- **Settings** - app preferences, including a link to **Licences**.
 
 Choose **Back to map** (or press the Android back button) to return to
 the map. Map tiles come from OpenStreetMap, so the map needs a network
 connection.
+
+### Map layers
+
+Below the side panel's Settings/Places/Notes selector is a second list,
+the **layer picker**, with five CTA/Chicago map layers, each independently
+toggleable and off by default:
+
+- **Rail lines** - CTA 'L' tracks, coloured by route (Red, Blue, Brown,
+  Green, Orange, Pink, Purple, Yellow); a shared/multi-route segment takes
+  the colour of the first route named on it.
+- **Rail stations**
+- **Bus routes** - one uniform colour (CTA bus routes have no route colour).
+- **Bus stops** - 10,760 stops; see "Bus stops performance" below.
+- **Neighbourhoods** - Chicago's 98 named neighbourhoods, rendered beneath
+  the four CTA layers.
+
+Tapping a layer's name toggles it on/off immediately - the label shows
+`(on)`, `(off)`, or `(unavailable)` if that layer's data failed to load (tap
+it again to retry). Toggling a layer never changes which screen is showing.
+Layer state survives switching to Settings/Places/Notes and back, but not
+an app restart.
+
+While any CTA layer is visible, the map's attribution control credits "Data
+provided by CTA"; while Neighbourhoods is visible, it credits "Data
+provided by City of Chicago".
 
 ## Development
 
@@ -58,9 +83,24 @@ npm run typecheck
 
 - `App.tsx` - the bobuttons `AppShell`: header, side panel, and the active view.
 - `src/map/` - the Leaflet map: view constants (Chicago's coordinates, zoom,
-  tile URL, attribution), the WebView screen, and the init script.
-- `src/shell/`, `src/views/` - side panel entries and their views.
+  tile URL, attribution, layer colours/styles/credits), the five map layers'
+  definitions (`mapLayers.ts`), the rail route colour rule (`railRoutes.ts`),
+  the WebView screen, and the init script.
+- `src/shell/` - the side panel's main selector data and `LayerPicker.tsx`,
+  the layer-toggle sub-selector.
+- `src/views/` - the side panel's views, including `LicencesView.tsx`.
+- `src/licences/` - licence/credit text shared by `LicencesView.tsx` and
+  this README.
 - `android/app/src/main/assets/leaflet/` - `map.html` and the vendored Leaflet.
+- `android/app/src/main/assets/mapdata/` - the five converted map layers
+  (generated; see "Map data" below - never edit these by hand).
+- `android/app/src/main/assets/licences/` - the sanitised CTA agreement and
+  City of Chicago terms shipped with the app (generated; see "Map data"
+  below).
+- `tools/` - the developer-run conversion scripts that produce the above
+  two asset directories, and `MAP-DATA-NOTE.md` at the repo root, which
+  documents them in full (provenance, exact commands, what was dropped and
+  why).
 
 ### Troubleshooting the map
 
@@ -104,7 +144,101 @@ printf '/* eslint-disable */\n' > android/app/src/main/assets/leaflet/leaflet.js
 cat node_modules/leaflet/dist/leaflet.js >> android/app/src/main/assets/leaflet/leaflet.js
 ```
 
+### Map data
+
+The five map layers are converted, once, from source GeoJSON files that are
+**not committed** (they live in a gitignored `Chicago Data Portal/` folder
+in the main checkout only). See `MAP-DATA-NOTE.md` at the repo root for full
+per-file provenance, the exact conversion commands, the property whitelist
+applied to each layer, and why a converted layer's feature count differs
+from the count the ticket originally named. To regenerate the committed
+assets after refreshing that source folder:
+
+```
+npm run convert:map-data
+npm run convert:licences
+```
+
+Neither script is run by Gradle or Metro - re-run them by hand and commit
+the result.
+
+**Delivery mechanism.** `MapScreen.tsx`'s WebView deliberately leaves
+`allowFileAccess`, `allowFileAccessFromFileURLs` and
+`allowUniversalAccessFromFileURLs` unset (see that file's header comment
+for the full rationale and the security tradeoff this choice avoids).
+That blocks `fetch`/`XHR` of `file:///android_asset/*.geojson` from the
+`file://` map document, so each layer is instead committed as a `.geojson.js`
+file - the GeoJSON wrapped in one `cupboardRegisterLayer("<id>", <geojson>)`
+call - and loaded as a same-origin `<script src="../mapdata/...">`
+subresource, exactly like `leaflet.js`/`leaflet.css` already are.
+`originWhitelist`/`shouldAllowNavigation` continue to gate only top-level
+navigation, unaffected by this.
+
+**Asset size.** The five committed layers total **~4.3 MB**
+(`android/app/src/main/assets/mapdata/`, coordinates rounded to 6 decimal
+places and serialised without pretty-print whitespace); the three licence
+assets (`android/app/src/main/assets/licences/`) add another ~36 KB.
+
+Measured debug-APK size delta, from two clean (`rm -rf android/app/build
+android/build && ./gradlew assembleDebug`) builds at the commit before this
+ticket's assets were added and after:
+
+| | Size |
+| --- | --- |
+| Before (origin/main, no CUPBOARD-4 assets) | 126,864,825 bytes (121.0 MiB) |
+| After (this branch) | 127,877,477 bytes (121.95 MiB) |
+| **Delta** | **+1,012,652 bytes (+0.97 MiB)** |
+
+The APK grows by only ~1 MB against ~4.3 MB of raw committed JSON because
+the APK's own zip compression already shrinks the repetitive JSON
+structure substantially.
+
+### Bus stops performance
+
+The bus-stops layer is 10,760 point features. Three techniques keep the map
+responsive with it enabled, all in `map.html`:
+
+1. **Canvas rendering** (`preferCanvas: true`) - one shared `<canvas>` per
+   pane instead of one SVG `<path>`/DOM node per feature.
+2. **`circleMarker`**, not full `marker` icons, for every point layer
+   (rail stations and bus stops) - cheaper to rasterise at this count.
+3. **`interactive: false`** on every layer - skips hit-testing entirely,
+   so panning/zooming never has to test against 10,760 shapes, and the
+   neighbourhood fills never swallow a gesture either.
+4. **On-demand loading** - a layer's `<script>` asset is only requested the
+   first time it is toggled on, not at page load.
+
+A **zoom gate** (`BUS_STOPS_MIN_ZOOM` in `src/map/mapConstants.ts`) is wired
+but shipped `null` (off): if a slower device needs it, setting it to a zoom
+level suppresses the bus-stops layer below that zoom, trading "see bus stops
+zoomed out" for responsiveness. Turning it on changes visible behaviour, so
+update this section if it is ever enabled.
+
 ### Licences
 
 See `THIRD-PARTY-NOTICE.md` for the React Native template, bobuttons, the
 packages bobuttons bundles, and `react-native-svg`.
+
+**CTA data.** Rail and bus map layers are provided by the Chicago Transit
+Authority (CTA) under its Developer License Agreement, committed verbatim
+(re-encoded to UTF-8, with the three CTA-logo `<img>` references removed -
+see `MAP-DATA-NOTE.md`) at
+`android/app/src/main/assets/licences/cta-developer-license-agreement.html`.
+This app is not affiliated with, endorsed by or sponsored by CTA; "Data
+provided by CTA" (CTA licence section III.6's blessed optional credit) is
+shown in the map's attribution control while any CTA layer is visible.
+
+**City of Chicago data.** The Neighbourhoods layer uses the City of
+Chicago's `Neighborhoods_2012b` dataset (attribution "City of Chicago",
+http://www.cityofchicago.org, licence "See Terms of Use") - see
+`android/app/src/main/assets/licences/neighbourhoods-dataset-licence.txt`
+and `MAP-DATA-NOTE.md` for the full record. "Data provided by City of
+Chicago" is shown in the map's attribution control while that layer is
+visible. The City's Terms of Use (committed at
+`android/app/src/main/assets/licences/chicago-terms-of-use.txt`) require
+this derivative-use disclaimer wherever the app "can be accessed or
+downloaded":
+
+> This site provides applications using data that has been modified for use from its original source, www.cityofchicago.org, the official website of the City of Chicago.  The City of Chicago makes no claims as to the content, accuracy, timeliness, or completeness of any of the data provided at this site.  The data provided at this site is subject to change at any time.  It is understood that the data provided at this site is being used at one's own risk.
+
+It is also shown in-app on the **Licences** view (Settings -> Licences).

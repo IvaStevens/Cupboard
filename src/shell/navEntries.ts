@@ -30,7 +30,17 @@ export type SidebarEntryId = 'settings' | 'places' | 'notes';
 /** Sentinel `current` value while the map (the default view) is showing. */
 export const MAP_VIEW_ID = 'map';
 
-export type ViewId = typeof MAP_VIEW_ID | SidebarEntryId;
+/**
+ * CUPBOARD-4: the in-app licences surface (AC21), reached from the
+ * Settings placeholder. Deliberately NOT a fourth `SIDEBAR_ENTRY_IDS`
+ * entry/`SIDEBAR_ENTRIES` tab - that would change what `TabBar` lists,
+ * and AC24 pins the sidebar to exactly Settings, Places, Notes. Like
+ * `MAP_VIEW_ID`, this is a `ViewId` that `isSidebarEntryId` correctly
+ * reports `false` for.
+ */
+export const LICENCES_VIEW_ID = 'licences';
+
+export type ViewId = typeof MAP_VIEW_ID | typeof LICENCES_VIEW_ID | SidebarEntryId;
 
 const SIDEBAR_ENTRY_IDS: ReadonlyArray<SidebarEntryId> = [
   'settings',

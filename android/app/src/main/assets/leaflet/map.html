@@ -139,12 +139,249 @@
             center: [config.latitude, config.longitude],
             zoom: config.zoom,
             zoomControl: true,
+            // CUPBOARD-4: a shared <canvas> per pane instead of one SVG
+            // <path> per feature - load-bearing for the 10,760-point bus
+            // stops layer (AC15), not a cosmetic choice.
+            preferCanvas: !!config.preferCanvas,
           });
 
           var tileLayer = L.tileLayer(config.tileUrlTemplate, {
             maxZoom: config.maxZoom,
             attribution: config.attributionHtml,
           }).addTo(map);
+
+          // ---------------------------------------------------------
+          // CUPBOARD-4: five independently toggleable data layers.
+          //
+          // A custom pane for the neighbourhood polygons, given a
+          // z-index BELOW the default overlay pane (400, where rail
+          // lines/bus routes render) and the default marker pane (600,
+          // where circleMarker rail stations/bus stops render) - so
+          // neighbourhoods always render beneath all four CTA layers
+          // (AC13), regardless of which order the layers were toggled
+          // on in. Using pane z-index instead of bringToBack()/
+          // bringToFront() calls means toggling a CTA layer on AFTER
+          // neighbourhoods can never need a re-stacking call.
+          // ---------------------------------------------------------
+          var neighbourhoodPane = map.createPane(config.neighbourhoodPane.name);
+          neighbourhoodPane.style.zIndex = config.neighbourhoodPane.zIndex;
+
+          // One entry per configured layer; `state` is 'idle' (never
+          // requested) -> 'loading' (<script> tag injected, data not
+          // back yet) -> 'loaded' (data cached, may or may not be on
+          // the map right now) or 'error' (the <script> failed - the
+          // picker shows "(unavailable)" and a retry re-requests it).
+          var layersById = {};
+          (config.layers || []).forEach(function (layerConfig) {
+            layersById[layerConfig.id] = {
+              config: layerConfig,
+              state: 'idle',
+              rawData: null,
+              leafletLayer: null,
+            };
+          });
+          var desiredLayerIds = [];
+
+          // Builds the actual Leaflet layer for one already-loaded
+          // layer id. Every vector gets `interactive: false` (AC13: the
+          // neighbourhood fills - and, for consistency, every other
+          // layer - must never swallow a pan/zoom gesture) and every
+          // colour/weight/style number comes from `config`, never a
+          // literal here.
+          function buildLeafletLayerFor(id, geojson) {
+            if (id === 'cta-rail-lines') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                style: function (feature) {
+                  var lines = feature && feature.properties && feature.properties.lines;
+                  var colour =
+                    (lines && config.railColourByName[lines]) || config.busRouteColour;
+                  return {color: colour, weight: config.railLineWeight, interactive: false};
+                },
+              });
+            }
+            if (id === 'cta-bus-routes') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                style: function () {
+                  return {
+                    color: config.busRouteColour,
+                    weight: config.busRouteWeight,
+                    interactive: false,
+                  };
+                },
+              });
+            }
+            if (id === 'cta-rail-stations') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                pointToLayer: function (feature, latlng) {
+                  var style = Object.assign({}, config.stationStyle, {interactive: false});
+                  return L.circleMarker(latlng, style);
+                },
+              });
+            }
+            if (id === 'cta-bus-stops') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                pointToLayer: function (feature, latlng) {
+                  var style = Object.assign({}, config.busStopStyle, {interactive: false});
+                  return L.circleMarker(latlng, style);
+                },
+              });
+            }
+            if (id === 'chicago-neighbourhoods') {
+              return L.geoJSON(geojson, {
+                interactive: false,
+                pane: config.neighbourhoodPane.name,
+                style: function () {
+                  return Object.assign({}, config.neighbourhoodStyle, {interactive: false});
+                },
+              });
+            }
+            return null;
+          }
+
+          // Derives the attribution set from which layers are currently
+          // LOADED AND DESIRED (AC22) - never an increment/decrement
+          // counter, which double-decrements across remounts/retries.
+          // Recomputed, not toggled, on every call.
+          function updateCredits() {
+            var ctaVisible = false;
+            var neighbourhoodsVisible = false;
+            desiredLayerIds.forEach(function (id) {
+              var entry = layersById[id];
+              if (!entry || entry.state !== 'loaded') {
+                return;
+              }
+              if (entry.config.creditGroup === 'cta') {
+                ctaVisible = true;
+              } else if (entry.config.creditGroup === 'neighbourhoods') {
+                neighbourhoodsVisible = true;
+              }
+            });
+            map.attributionControl.removeAttribution(config.creditTexts.cta);
+            map.attributionControl.removeAttribution(config.creditTexts.neighbourhoods);
+            if (ctaVisible) {
+              map.attributionControl.addAttribution(config.creditTexts.cta);
+            }
+            if (neighbourhoodsVisible) {
+              map.attributionControl.addAttribution(config.creditTexts.neighbourhoods);
+            }
+          }
+
+          // Applies (or un-applies) AC15's dormant bus-stops zoom gate.
+          // A no-op whenever config.busStopsMinZoom is null, which is
+          // what ships - see mapConstants.ts's BUS_STOPS_MIN_ZOOM.
+          function applyBusStopsZoomGate() {
+            if (config.busStopsMinZoom == null) {
+              return;
+            }
+            var entry = layersById['cta-bus-stops'];
+            if (!entry || !entry.leafletLayer) {
+              return;
+            }
+            var shouldShow = map.getZoom() >= config.busStopsMinZoom;
+            var isShown = map.hasLayer(entry.leafletLayer);
+            if (shouldShow && !isShown) {
+              entry.leafletLayer.addTo(map);
+            } else if (!shouldShow && isShown) {
+              map.removeLayer(entry.leafletLayer);
+            }
+          }
+          if (config.busStopsMinZoom != null) {
+            map.on('zoomend', applyBusStopsZoomGate);
+          }
+
+          function addLayerToMap(id) {
+            var entry = layersById[id];
+            if (!entry || entry.leafletLayer || !entry.rawData) {
+              return;
+            }
+            var layer = buildLeafletLayerFor(id, entry.rawData);
+            if (!layer) {
+              post('layer-error: unbuildable-layer:' + id);
+              return;
+            }
+            entry.leafletLayer = layer;
+            if (id === 'cta-bus-stops' && config.busStopsMinZoom != null) {
+              applyBusStopsZoomGate();
+            } else {
+              layer.addTo(map);
+            }
+            updateCredits();
+          }
+
+          function loadLayerScript(id) {
+            var entry = layersById[id];
+            if (!entry) {
+              return;
+            }
+            var script = document.createElement('script');
+            // Relative to this document, same as leaflet.css/leaflet.js
+            // above - resolves inside file:///android_asset without
+            // needing allowFileAccess*/allowUniversalAccessFromFileURLs
+            // (see MapScreen.tsx's header comment for why that matters
+            // and why those flags stay unset).
+            script.src = config.mapDataDir + entry.config.assetFile;
+            script.onerror = function () {
+              entry.state = 'error';
+              post('layer-error: ' + id);
+              updateCredits();
+            };
+            document.head.appendChild(script);
+          }
+
+          // Called by each mapdata/*.geojson.js asset (see
+          // tools/mapDataConversion.js's wrapAsRegisterLayerScript) once
+          // its <script> tag finishes loading. RE-CHECKS the current
+          // desired set before adding anything to the map - fixes the
+          // load/toggle race where a layer is toggled off again while
+          // its data is still in flight.
+          window.cupboardRegisterLayer = function (id, geojson) {
+            var entry = layersById[id];
+            if (!entry) {
+              post('layer-error: unknown-layer:' + id);
+              return;
+            }
+            entry.rawData = geojson;
+            entry.state = 'loaded';
+            if (desiredLayerIds.indexOf(id) !== -1) {
+              addLayerToMap(id);
+            }
+            updateCredits();
+          };
+
+          // Called by MapScreen.tsx (see src/map/mapInitScript.ts's
+          // buildSetLayersScript()) with the FULL set of layer ids that
+          // should be visible right now - on every toggle, and again
+          // with the full enabled set on every init-ok heartbeat after a
+          // remount (AC11/AC12). Idempotent: calling it twice with the
+          // same ids is a no-op the second time.
+          window.cupboardSetLayers = function (ids) {
+            desiredLayerIds = (ids || []).slice();
+            Object.keys(layersById).forEach(function (id) {
+              var entry = layersById[id];
+              var wanted = desiredLayerIds.indexOf(id) !== -1;
+              if (!wanted && entry.leafletLayer) {
+                map.removeLayer(entry.leafletLayer);
+                entry.leafletLayer = null;
+              }
+            });
+            desiredLayerIds.forEach(function (id) {
+              var entry = layersById[id];
+              if (!entry || entry.leafletLayer) {
+                return;
+              }
+              if (entry.state === 'loaded') {
+                addLayerToMap(id);
+              } else if (entry.state === 'idle' || entry.state === 'error') {
+                entry.state = 'loading';
+                loadLayerScript(id);
+              }
+            });
+            updateCredits();
+          };
 
           // Tile-fetch failure (no network, a blocked endpoint, OSM
           // rate-limiting) is accepted as degraded-but-silent for this
