@@ -6,16 +6,18 @@
  * CUPBOARD-4 toggleable layers).
  *
  * This module is component-free: it imports no react-native-webview and
- * depends on nothing but mapConstants/railRoutes/mapLayers, so it is
+ * depends on mapConstants/railRoutes/mapLayers plus (CUPBOARD-5)
+ * src/map/neighbourhoodColours and src/places/passportData, so it is
  * assertable in a plain Jest test without the react-native-webview mock.
  *
  * Every map parameter is read from mapConstants (plus the layer list
- * from mapLayers and the rail colour rule from railRoutes) and passed
- * into the page as a single JSON-stringified config - never duplicated
- * as a literal into map.html. Both builder functions must stay pure and
- * deterministic (map.test.tsx compares `buildMapInitScript()`'s output
- * with `toBe`): no `Set` iteration, no `Date`, no non-deterministic
- * object key order.
+ * from mapLayers, the rail colour rule from railRoutes and - CUPBOARD-5 -
+ * the per-area neighbourhood colour rule from neighbourhoodColours) and
+ * passed into the page as a single JSON-stringified config - never
+ * duplicated as a literal into map.html. Both builder functions must
+ * stay pure and deterministic (map.test.tsx compares
+ * `buildMapInitScript()`'s output with `toBe`): no `Set` iteration, no
+ * `Date`, no non-deterministic object key order.
  *
  * @format
  */
@@ -47,6 +49,8 @@ import {
 } from './mapConstants';
 import {buildRailColourByName} from './railRoutes';
 import {MAP_LAYERS, type LayerId} from './mapLayers';
+import {buildNeighbourhoodStyleByArea} from './neighbourhoodColours';
+import {PASSPORT_NEIGHBOURHOODS} from '../places/passportData';
 
 export interface MapInitConfigLayer {
   id: LayerId;
@@ -74,6 +78,14 @@ export interface MapInitConfig {
   stationStyle: CircleLayerStyle;
   busStopStyle: CircleLayerStyle;
   neighbourhoodStyle: PolygonLayerStyle;
+  /**
+   * CUPBOARD-5: per-`pri_neigh`-area override of `neighbourhoodStyle`,
+   * built by src/map/neighbourhoodColours.ts from the 17 passport
+   * neighbourhoods' colour pairs. map.html looks `feature.properties.pri_neigh`
+   * up here first, falling back to `neighbourhoodStyle` for the 81 areas
+   * with no passport neighbourhood.
+   */
+  neighbourhoodStyleByArea: Record<string, PolygonLayerStyle>;
   busStopsMinZoom: number | null;
   neighbourhoodPane: {name: string; zIndex: number};
   creditTexts: {cta: string; chicago: string};
@@ -105,6 +117,10 @@ export function buildMapInitConfig(): MapInitConfig {
     stationStyle: RAIL_STATION_STYLE,
     busStopStyle: BUS_STOP_STYLE,
     neighbourhoodStyle: NEIGHBOURHOOD_STYLE,
+    neighbourhoodStyleByArea: buildNeighbourhoodStyleByArea(
+      PASSPORT_NEIGHBOURHOODS,
+      NEIGHBOURHOOD_STYLE,
+    ),
     busStopsMinZoom: BUS_STOPS_MIN_ZOOM,
     neighbourhoodPane: {
       name: NEIGHBOURHOOD_PANE_NAME,

@@ -22,10 +22,12 @@
  * `enabledLayerIds`/`failedLayerIds` below. The single child of
  * `AppShell` is one `ViewPane` (never `ViewBody`, which wraps children in
  * a scrollable `Scroll` primitive that would fight the map's pan/zoom),
- * holding the map (the default view), the active sidebar entry's
- * placeholder, or the licences view. `ViewPane` does add non-zero padding
- * around its content, but it does not itself scroll or otherwise
- * intercept gestures, so the map's own pan/zoom is unaffected.
+ * holding the map (the default view), the Places tab (CUPBOARD-5's
+ * `PlacesView` - the only sidebar entry with a real feature behind it),
+ * the Settings/Notes placeholder, or the licences view. `ViewPane` does
+ * add non-zero padding around its content, but it does not itself
+ * scroll or otherwise intercept gestures, so the map's own pan/zoom is
+ * unaffected.
  *
  * NAVIGATION MODEL: the map is the default view (`activeView ===
  * MAP_VIEW_ID`). Selecting a sidebar entry replaces the map with that
@@ -65,6 +67,7 @@ import {
 import {AppHeader, AppShell, BobuttonsProvider, TabBar, ViewPane} from 'bobuttons';
 import MapScreen from './src/map/MapScreen';
 import PlaceholderView from './src/views/PlaceholderView';
+import PlacesView from './src/views/PlacesView';
 import LicencesView from './src/views/LicencesView';
 import LayerPicker from './src/shell/LayerPicker';
 import {
@@ -229,7 +232,9 @@ function AppContent() {
       }
       insets={insets}>
       <ViewPane>
-        {isSidebarEntryId(activeView) ? (
+        {activeView === 'places' ? (
+          <PlacesView onReturn={returnToMap} />
+        ) : isSidebarEntryId(activeView) ? (
           <PlaceholderView
             entryId={activeView}
             onReturn={returnToMap}

@@ -10,7 +10,10 @@ the +/- buttons zoom too.
 
 The side panel switches between the app's sections:
 
-- **Places** - the points of interest you have found around the city.
+- **Places** - the 50 coffee shops from the Chicago Coffee Passport,
+  grouped by neighbourhood and colour-coded to match the Neighbourhoods
+  map layer. Select a shop for its full details; there is no editing
+  (ratings, notes, visited state) in this view yet.
 - **Notes** - the notes you have saved about them.
 - **Settings** - app preferences, including a link to **Licences**.
 
@@ -31,7 +34,10 @@ toggleable and off by default:
 - **Bus routes** - one uniform colour (CTA bus routes have no route colour).
 - **Bus stops** - 10,760 stops; see "Bus stops performance" below.
 - **Neighbourhoods** - Chicago's 98 named neighbourhoods, rendered beneath
-  the four CTA layers.
+  the four CTA layers. The 17 areas matching a Places neighbourhood are
+  coloured with that neighbourhood's own passport colour pair (see
+  "Places data" below); every other area keeps the plain grey/light-grey
+  default style.
 - **Bike routes** - the City's 1,008 bike route segments in one uniform
   colour.
 
@@ -87,10 +93,17 @@ npm run typecheck
 - `src/map/` - the Leaflet map: view constants (Chicago's coordinates, zoom,
   tile URL, attribution, layer colours/styles/credits), the six map layers'
   definitions (`mapLayers.ts`), the rail route colour rule (`railRoutes.ts`),
-  the WebView screen, and the init script.
+  the per-area neighbourhood colour rule (`neighbourhoodColours.ts`, see
+  "Places data" below), the WebView screen, and the init script.
 - `src/shell/` - the side panel's main selector data and `LayerPicker.tsx`,
   the layer-toggle sub-selector.
-- `src/views/` - the side panel's views, including `LicencesView.tsx`.
+- `src/places/` - the Places tab's data: `passportData.json` (generated
+  once, see "Places data" below) and `passportData.ts`, the typed access
+  layer the Places views and `src/map/neighbourhoodColours.ts` both
+  import.
+- `src/views/` - the side panel's views: `LicencesView.tsx`, `PlacesView.tsx`
+  and `PlaceDetailView.tsx` (the Places tab), and `PlaceholderView.tsx`
+  (still used for Settings and Notes).
 - `src/licences/` - licence/credit text shared by `LicencesView.tsx` and
   this README.
 - `android/app/src/main/assets/leaflet/` - `map.html` and the vendored Leaflet.
@@ -101,6 +114,56 @@ npm run typecheck
   (the CTA agreement re-encoded to UTF-8 with its logo images removed).
 - `tools/` - the developer-run script that produces the map layers (see
   "Map data" below).
+
+### Places data
+
+`src/places/passportData.json` (50 coffee shops across 17 neighbourhoods)
+was converted **once** from a gitignored source document,
+`docs/passport.tex` (the author's own "Chicago Coffee Passport", not
+committed - see `.gitignore`'s "Local workflow docs" entry), using a
+throwaway script that was run by hand and then discarded, not committed
+under `tools/`. Unlike the map layers above, **there is no re-runnable
+converter for this data and none should be added**: the parsing was a
+one-time job, and the committed JSON file is the product, not a
+generated artifact that gets regenerated and recommitted. From here on,
+`src/places/passportData.json` is the source of truth - edit it directly
+(the author plans to re-match some shops to neighbourhoods by hand) and
+commit the result like any other source file.
+
+`src/places/passportData.ts` is a small, hand-written typed layer over
+that JSON: it documents the fixed field names (`signatureDrink`,
+`website`, `overallRating`, `neighbourhoodRating`, all using `null` as
+the one shared "blank" representation) and exports
+`PASSPORT_NEIGHBOURHOODS`, `PASSPORT_PLACES` and
+`PLACES_BY_NEIGHBOURHOOD_ID`.
+
+**Id stability.** Every neighbourhood and place id is a deterministic
+slug derived from its name (never from array position), and a place
+references its neighbourhood by id. Because ids are name-derived, **a
+future id change is a data migration, not a cosmetic rename**: a planned
+on-device database (an upcoming ticket) will use these same ids as
+primary keys, so if a hand-edit to `passportData.json` ever changes an
+id (visible as an id diff, not just a text diff, in
+`git diff src/places/passportData.json`), any already-stored rows keyed
+on the old id need to be migrated rather than silently orphaned.
+
+**What is - and is not - in this file.** The 50 shops' blank `website`
+and `overallRating` fields, and the 17 neighbourhoods' blank
+`neighbourhoodRating` field, are the passport document's own unfilled
+answer sheet (`null`), captured here so a future ratings/notes feature
+needs no schema change - they are not where user ratings, notes or
+visited state will live; that is on-device database state, out of scope
+for this file entirely.
+
+**Map colouring.** Each of the 17 passport neighbourhoods carries its
+own colour pair (`colours.backgroundHex`/`frameHex`, taken from the
+passport's own `sectionbox` colours) and the `pri_neigh` neighbourhoods-
+layer area(s) it corresponds to (`connectedAreas`). `src/map/
+neighbourhoodColours.ts` turns that into a `{pri_neigh: style}`
+dictionary consumed by the map init config - see the "Map layers" section
+above for the visible result, and that file's own header comment for the
+precedence rule (South Loop/Pilsen vs. The Loop/Lower West Side,
+Bronzeville's two areas).
 
 ### Troubleshooting the map
 

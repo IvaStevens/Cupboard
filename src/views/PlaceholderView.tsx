@@ -1,8 +1,9 @@
 /**
- * Empty placeholder view shown for whichever sidebar entry (Settings,
- * Places or Notes) is currently selected. No real feature sits behind
- * any of the three (AC7); this renders only the entry's name and a way
- * back to the map.
+ * Empty placeholder view shown for the Settings or Notes sidebar entry.
+ * CUPBOARD-5 gave Places a real feature (`src/views/PlacesView.tsx`,
+ * rendered directly by App.tsx instead of this component), so this file
+ * now only covers the two entries that are still placeholders; it
+ * renders only the entry's name and a way back to the map.
  *
  * Built only from bobuttons components, no icons:
  *  - `ViewToolbar` for the caption, not a plain `Text` - the bobuttons
