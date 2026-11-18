@@ -1,0 +1,1257 @@
+{
+  "neighbourhoods": [
+    {
+      "id": "the-loop",
+      "name": "The Loop",
+      "displayTitle": null,
+      "colours": {
+        "stem": "loopBlue",
+        "backgroundRgb": [
+          219,
+          229,
+          242
+        ],
+        "backgroundHex": "#DBE5F2",
+        "frameRgb": [
+          62,
+          100,
+          150
+        ],
+        "frameHex": "#3E6496"
+      },
+      "connectedAreas": [
+        "Loop"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "river-north",
+      "name": "River North",
+      "displayTitle": null,
+      "colours": {
+        "stem": "riverBurgundy",
+        "backgroundRgb": [
+          242,
+          222,
+          225
+        ],
+        "backgroundHex": "#F2DEE1",
+        "frameRgb": [
+          140,
+          50,
+          60
+        ],
+        "frameHex": "#8C323C"
+      },
+      "connectedAreas": [
+        "River North"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "west-loop",
+      "name": "West Loop",
+      "displayTitle": "West Loop / Fulton Market",
+      "colours": {
+        "stem": "westOlive",
+        "backgroundRgb": [
+          222,
+          235,
+          215
+        ],
+        "backgroundHex": "#DEEBD7",
+        "frameRgb": [
+          75,
+          115,
+          65
+        ],
+        "frameHex": "#4B7341"
+      },
+      "connectedAreas": [
+        "West Loop"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "wicker-park",
+      "name": "Wicker Park",
+      "displayTitle": null,
+      "colours": {
+        "stem": "wickerViolet",
+        "backgroundRgb": [
+          234,
+          224,
+          242
+        ],
+        "backgroundHex": "#EAE0F2",
+        "frameRgb": [
+          105,
+          70,
+          145
+        ],
+        "frameHex": "#694691"
+      },
+      "connectedAreas": [
+        "Wicker Park"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "bucktown",
+      "name": "Bucktown",
+      "displayTitle": null,
+      "colours": {
+        "stem": "bucktownTerra",
+        "backgroundRgb": [
+          245,
+          225,
+          210
+        ],
+        "backgroundHex": "#F5E1D2",
+        "frameRgb": [
+          175,
+          85,
+          45
+        ],
+        "frameHex": "#AF552D"
+      },
+      "connectedAreas": [
+        "Bucktown"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "logan-square",
+      "name": "Logan Square",
+      "displayTitle": null,
+      "colours": {
+        "stem": "loganTeal",
+        "backgroundRgb": [
+          210,
+          238,
+          238
+        ],
+        "backgroundHex": "#D2EEEE",
+        "frameRgb": [
+          45,
+          130,
+          130
+        ],
+        "frameHex": "#2D8282"
+      },
+      "connectedAreas": [
+        "Logan Square"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "avondale",
+      "name": "Avondale",
+      "displayTitle": null,
+      "colours": {
+        "stem": "avondaleGold",
+        "backgroundRgb": [
+          248,
+          242,
+          210
+        ],
+        "backgroundHex": "#F8F2D2",
+        "frameRgb": [
+          160,
+          130,
+          30
+        ],
+        "frameHex": "#A0821E"
+      },
+      "connectedAreas": [
+        "Avondale"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "lincoln-park",
+      "name": "Lincoln Park",
+      "displayTitle": null,
+      "colours": {
+        "stem": "lincolnForest",
+        "backgroundRgb": [
+          215,
+          235,
+          220
+        ],
+        "backgroundHex": "#D7EBDC",
+        "frameRgb": [
+          55,
+          110,
+          70
+        ],
+        "frameHex": "#376E46"
+      },
+      "connectedAreas": [
+        "Lincoln Park"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "lakeview",
+      "name": "Lakeview",
+      "displayTitle": null,
+      "colours": {
+        "stem": "lakeviewSky",
+        "backgroundRgb": [
+          210,
+          232,
+          245
+        ],
+        "backgroundHex": "#D2E8F5",
+        "frameRgb": [
+          50,
+          120,
+          170
+        ],
+        "frameHex": "#3278AA"
+      },
+      "connectedAreas": [
+        "Lake View"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "roscoe-village",
+      "name": "Roscoe Village",
+      "displayTitle": null,
+      "colours": {
+        "stem": "roscoeRose",
+        "backgroundRgb": [
+          248,
+          220,
+          228
+        ],
+        "backgroundHex": "#F8DCE4",
+        "frameRgb": [
+          180,
+          70,
+          100
+        ],
+        "frameHex": "#B44664"
+      },
+      "connectedAreas": [
+        "North Center"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "andersonville",
+      "name": "Andersonville",
+      "displayTitle": null,
+      "colours": {
+        "stem": "anderLavender",
+        "backgroundRgb": [
+          232,
+          225,
+          245
+        ],
+        "backgroundHex": "#E8E1F5",
+        "frameRgb": [
+          110,
+          85,
+          165
+        ],
+        "frameHex": "#6E55A5"
+      },
+      "connectedAreas": [
+        "Andersonville"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "uptown",
+      "name": "Uptown",
+      "displayTitle": null,
+      "colours": {
+        "stem": "uptownCoral",
+        "backgroundRgb": [
+          248,
+          225,
+          215
+        ],
+        "backgroundHex": "#F8E1D7",
+        "frameRgb": [
+          195,
+          90,
+          60
+        ],
+        "frameHex": "#C35A3C"
+      },
+      "connectedAreas": [
+        "Uptown"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "hyde-park",
+      "name": "Hyde Park",
+      "displayTitle": null,
+      "colours": {
+        "stem": "hydeSand",
+        "backgroundRgb": [
+          242,
+          235,
+          210
+        ],
+        "backgroundHex": "#F2EBD2",
+        "frameRgb": [
+          145,
+          115,
+          50
+        ],
+        "frameHex": "#917332"
+      },
+      "connectedAreas": [
+        "Hyde Park"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "bronzeville",
+      "name": "Bronzeville",
+      "displayTitle": null,
+      "colours": {
+        "stem": "bronzeAmber",
+        "backgroundRgb": [
+          245,
+          228,
+          200
+        ],
+        "backgroundHex": "#F5E4C8",
+        "frameRgb": [
+          165,
+          100,
+          20
+        ],
+        "frameHex": "#A56414"
+      },
+      "connectedAreas": [
+        "Douglas",
+        "Grand Boulevard"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "bridgeport",
+      "name": "Bridgeport",
+      "displayTitle": null,
+      "colours": {
+        "stem": "bridgeSteel",
+        "backgroundRgb": [
+          218,
+          228,
+          238
+        ],
+        "backgroundHex": "#DAE4EE",
+        "frameRgb": [
+          70,
+          100,
+          135
+        ],
+        "frameHex": "#466487"
+      },
+      "connectedAreas": [
+        "Bridgeport"
+      ],
+      "parent": null,
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "south-loop",
+      "name": "South Loop",
+      "displayTitle": null,
+      "colours": {
+        "stem": "southSage",
+        "backgroundRgb": [
+          218,
+          235,
+          218
+        ],
+        "backgroundHex": "#DAEBDA",
+        "frameRgb": [
+          70,
+          120,
+          70
+        ],
+        "frameHex": "#467846"
+      },
+      "connectedAreas": [
+        "Loop"
+      ],
+      "parent": {
+        "kind": "neighbourhood",
+        "id": "the-loop"
+      },
+      "neighbourhoodRating": null
+    },
+    {
+      "id": "pilsen",
+      "name": "Pilsen",
+      "displayTitle": null,
+      "colours": {
+        "stem": "pilsenMagenta",
+        "backgroundRgb": [
+          245,
+          218,
+          232
+        ],
+        "backgroundHex": "#F5DAE8",
+        "frameRgb": [
+          155,
+          60,
+          105
+        ],
+        "frameHex": "#9B3C69"
+      },
+      "connectedAreas": [
+        "Lower West Side"
+      ],
+      "parent": {
+        "kind": "layerArea",
+        "priNeigh": "Lower West Side"
+      },
+      "neighbourhoodRating": null
+    }
+  ],
+  "places": [
+    {
+      "id": "hero-coffee-bar",
+      "name": "Hero Coffee Bar",
+      "neighbourhoodId": "the-loop",
+      "address": "22 E Jackson Blvd, Chicago, IL 60604",
+      "website": null,
+      "whyGreatForRemoteWork": "Hero Coffee Bar is tucked into an alley just off Jackson Boulevard, giving it a quieter feel than many downtown cafés. It's a popular stop for professionals and students who appreciate quality espresso and a relaxed atmosphere.",
+      "signatureDrink": "Hero Latte",
+      "coffeeHighlights": [
+        "Excellent espresso drinks",
+        "Seasonal specialty lattes",
+        "Fresh pastries",
+        "Friendly staff"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "dollop-coffee-co",
+      "name": "Dollop Coffee Co.",
+      "neighbourhoodId": "the-loop",
+      "address": "343 S Dearborn St, Chicago, IL 60604",
+      "website": null,
+      "whyGreatForRemoteWork": "Dollop is a dependable downtown workspace with plenty of seating and a menu that goes beyond coffee. It's ideal if you're planning a longer work session and want breakfast or lunch without leaving your table.",
+      "signatureDrink": "Honey Cinnamon Latte",
+      "coffeeHighlights": [
+        "Full breakfast menu",
+        "Reliable Wi-Fi",
+        "Comfortable seating",
+        "Good for extended work sessions"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "intelligentsia-coffee-monadnock",
+      "name": "Intelligentsia Coffee (Monadnock)",
+      "neighbourhoodId": "the-loop",
+      "address": "53 W Jackson Blvd, Chicago, IL 60604",
+      "website": null,
+      "whyGreatForRemoteWork": "Located inside the historic Monadnock Building, this café is a favorite among coffee enthusiasts. While seating can fill quickly during peak hours, it's a fantastic stop for high-quality coffee and focused work.",
+      "signatureDrink": "Black Cat Espresso",
+      "coffeeHighlights": [
+        "Award-winning coffee",
+        "Skilled baristas",
+        "Historic setting",
+        "Excellent espresso"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "fairgrounds-coffee-and-tea",
+      "name": "Fairgrounds Coffee & Tea",
+      "neighbourhoodId": "the-loop",
+      "address": "12 S Michigan Ave, Chicago, IL 60603",
+      "website": null,
+      "whyGreatForRemoteWork": "Fairgrounds offers a bright, modern atmosphere with coffee from multiple specialty roasters. The spacious interior and food menu make it a comfortable place for meetings or solo work sessions.",
+      "signatureDrink": "Campfire Latte",
+      "coffeeHighlights": [
+        "Multiple specialty coffee roasters",
+        "Tea and matcha options",
+        "Breakfast and lunch available",
+        "Spacious seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "sawada-coffee",
+      "name": "Sawada Coffee",
+      "neighbourhoodId": "river-north",
+      "address": "112 N Green St, Chicago, IL 60607 (West Loop, just across the river and a favorite stop for many River North visitors)",
+      "website": null,
+      "whyGreatForRemoteWork": "Created by world-renowned latte artist Hiroshi Sawada, this café is famous for its creative drinks and industrial atmosphere. It has communal seating, a lively environment, and attracts students, creatives, and professionals throughout the day.",
+      "signatureDrink": "Military Latte (Matcha + Espresso + Vanilla + Cocoa)",
+      "coffeeHighlights": [
+        "Signature Military Latte",
+        "Japanese-inspired coffee creations",
+        "Industrial loft atmosphere",
+        "Inside Green Street Smoked Meats building"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "ground-up-coffee-and-bites",
+      "name": "Ground Up Coffee & Bites",
+      "neighbourhoodId": "river-north",
+      "address": "363 W Erie St, Chicago, IL 60654",
+      "website": null,
+      "whyGreatForRemoteWork": "Ground Up is a bright neighborhood café with reliable Wi-Fi, comfortable seating, and a welcoming atmosphere. It's popular with nearby residents and professionals looking for a quieter place to work than the larger downtown chains.",
+      "signatureDrink": "Maple Cinnamon Latte",
+      "coffeeHighlights": [
+        "House-made syrups",
+        "Breakfast sandwiches",
+        "Fresh pastries",
+        "Cozy neighborhood feel"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "oud-coffee-and-cafe",
+      "name": "OUD Coffee & Café",
+      "neighbourhoodId": "river-north",
+      "address": "910 N Orleans St, Chicago, IL 60610",
+      "website": null,
+      "whyGreatForRemoteWork": "OUD combines specialty coffee with Mediterranean-inspired pastries in a modern café setting. Large windows, comfortable seating, and a relaxed atmosphere make it an excellent choice for focused work sessions.",
+      "signatureDrink": "Pistachio Latte",
+      "coffeeHighlights": [
+        "Pistachio Latte",
+        "Cardamom coffee",
+        "Mediterranean pastries",
+        "Bright, contemporary interior"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "nomad-chicago",
+      "name": "Nomad Chicago",
+      "neighbourhoodId": "river-north",
+      "address": "820 N Orleans St, Chicago, IL 60610",
+      "website": null,
+      "whyGreatForRemoteWork": "Nomad offers a clean, modern workspace with specialty coffee, comfortable seating, and a calm environment that encourages longer visits. It's especially popular among freelancers and people working between meetings.",
+      "signatureDrink": "Vanilla Cardamom Latte",
+      "coffeeHighlights": [
+        "Specialty espresso drinks",
+        "Fresh pastries",
+        "Comfortable lounge seating",
+        "Relaxed atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "vietfive-coffee",
+      "name": "Vietfive Coffee",
+      "neighbourhoodId": "west-loop",
+      "address": "111 W Jackson Blvd, Chicago, IL 60604",
+      "website": null,
+      "whyGreatForRemoteWork": "Vietfive blends Vietnamese coffee traditions with modern café culture. The relaxed atmosphere, unique drinks, and comfortable seating make it a refreshing alternative to traditional coffee shops.",
+      "signatureDrink": "Vietnamese Egg Coffee",
+      "coffeeHighlights": [
+        "Authentic Vietnamese coffee",
+        "Egg Coffee",
+        "Ube-inspired seasonal drinks",
+        "Friendly neighborhood atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "good-ambler",
+      "name": "Good Ambler",
+      "neighbourhoodId": "west-loop",
+      "address": "216 N Peoria St, Chicago, IL 60607",
+      "website": null,
+      "whyGreatForRemoteWork": "Good Ambler combines an award-winning pastry program with specialty coffee in a bright, modern space. It's a favorite among locals looking for a productive morning with excellent food.",
+      "signatureDrink": "Honey Cinnamon Latte",
+      "coffeeHighlights": [
+        "Incredible house-made pastries",
+        "Excellent espresso",
+        "Bright natural lighting",
+        "Comfortable seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "metric-coffee-west-loop",
+      "name": "Metric Coffee",
+      "neighbourhoodId": "west-loop",
+      "address": "2021 W Fulton St, Chicago, IL 60612",
+      "website": null,
+      "whyGreatForRemoteWork": "Metric is beloved by coffee enthusiasts for its expertly roasted beans and relaxed industrial setting. While it has a more minimalist feel, it's a great place to enjoy exceptional coffee and knock out a few hours of focused work.",
+      "signatureDrink": "House Latte",
+      "coffeeHighlights": [
+        "Small-batch roasted coffee",
+        "Expert baristas",
+        "Bright, modern café",
+        "Excellent pour-overs"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "la-colombe-coffee-roasters",
+      "name": "La Colombe Coffee Roasters",
+      "neighbourhoodId": "west-loop",
+      "address": "955 W Randolph St, Chicago, IL 60607",
+      "website": null,
+      "whyGreatForRemoteWork": "La Colombe offers a spacious café with plenty of seating, reliable Wi-Fi, and consistently excellent coffee. It's an easy choice for long work sessions or casual meetings.",
+      "signatureDrink": "Draft Latte",
+      "coffeeHighlights": [
+        "Famous Draft Latte",
+        "Excellent cold brew",
+        "Spacious seating",
+        "Reliable Wi-Fi"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "the-wormhole-coffee",
+      "name": "The Wormhole Coffee",
+      "neighbourhoodId": "wicker-park",
+      "address": "1462 N Milwaukee Ave, Chicago, IL 60622",
+      "website": null,
+      "whyGreatForRemoteWork": "One of Chicago's most iconic coffee shops, The Wormhole combines excellent coffee with a fun retro atmosphere inspired by the 1980s. Comfortable seating, reliable Wi-Fi, and a relaxed vibe make it a favorite among freelancers and students.",
+      "signatureDrink": "Koopa Troopa Latte (Peanut Butter • Chocolate • Espresso)",
+      "coffeeHighlights": [
+        "Retro décor",
+        "Excellent espresso drinks",
+        "Friendly atmosphere",
+        "Great people watching"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "dark-matter-coffee-star-lounge",
+      "name": "Dark Matter Coffee – Star Lounge",
+      "neighbourhoodId": "wicker-park",
+      "address": "2521 W Chicago Ave, Chicago, IL 60622",
+      "website": null,
+      "whyGreatForRemoteWork": "Star Lounge is one of Dark Matter Coffee's flagship cafés and is known for its spacious interior, unique artwork, and excellent coffee. It's a favorite for longer work sessions thanks to its comfortable seating and welcoming atmosphere.",
+      "signatureDrink": "Mayan Mocha",
+      "coffeeHighlights": [
+        "Locally roasted coffee",
+        "Artistic interior",
+        "Spacious seating",
+        "House-made specialty drinks"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "bru-coffeeworks",
+      "name": "Brü Coffeeworks",
+      "neighbourhoodId": "wicker-park",
+      "address": "1562 N Milwaukee Ave, Chicago, IL 60622",
+      "website": null,
+      "whyGreatForRemoteWork": "Brü Coffeeworks offers a quieter alternative along Milwaukee Avenue with excellent espresso, comfortable seating, and a neighborhood atmosphere perfect for focused work.",
+      "signatureDrink": "Lavender Honey Latte",
+      "coffeeHighlights": [
+        "Specialty espresso",
+        "Cozy seating",
+        "Seasonal drinks",
+        "Friendly staff"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "ipsento-606",
+      "name": "Ipsento 606",
+      "neighbourhoodId": "wicker-park",
+      "address": "1813 N Milwaukee Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Ipsento 606 has earned a loyal following for its exceptional coffee and bright, inviting atmosphere. The café offers a comfortable environment for working while serving one of Chicago's most beloved signature lattes.",
+      "signatureDrink": "Ipsento Latte (Coconut • Cayenne • Honey)",
+      "coffeeHighlights": [
+        "Award-winning signature latte",
+        "Bright modern café",
+        "Great natural light",
+        "Friendly neighborhood feel"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "engine-coffee",
+      "name": "Engine Coffee",
+      "neighbourhoodId": "wicker-park",
+      "address": "1239 N Ashland Ave, Chicago, IL 60622",
+      "website": null,
+      "whyGreatForRemoteWork": "Engine Coffee is a neighborhood favorite with a relaxed atmosphere and welcoming staff. It's a comfortable place to settle in with a laptop while enjoying expertly crafted espresso drinks and fresh pastries.",
+      "signatureDrink": "Brown Sugar Cinnamon Latte",
+      "coffeeHighlights": [
+        "Comfortable seating",
+        "Neighborhood atmosphere",
+        "Fresh pastries",
+        "Excellent espresso"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "map-room-coffeehouse",
+      "name": "Map Room Coffeehouse",
+      "neighbourhoodId": "bucktown",
+      "address": "1949 N Hoyne Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Map Room Coffeehouse is a quiet neighborhood café with a laid-back atmosphere that's ideal for reading, writing, or remote work. Comfortable seating and a steady flow of locals create a welcoming environment without feeling overcrowded.",
+      "signatureDrink": "Maple Latte",
+      "coffeeHighlights": [
+        "Relaxed neighborhood atmosphere",
+        "Comfortable seating",
+        "Locally roasted coffee",
+        "Friendly staff"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "cafe-umbria-roastery",
+      "name": "Café Umbria Roastery",
+      "neighbourhoodId": "bucktown",
+      "address": "346 N Clark St, Chicago, IL 60654",
+      "website": null,
+      "whyGreatForRemoteWork": "Café Umbria serves expertly roasted Italian-style coffee in a modern, inviting setting. It's an excellent place to enjoy handcrafted espresso while catching up on emails or working through an afternoon project.",
+      "signatureDrink": "Caffè Umbria Mocha",
+      "coffeeHighlights": [
+        "Italian-style espresso",
+        "House-roasted coffee",
+        "Fresh pastries",
+        "Comfortable café seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "gaslight-coffee-roasters",
+      "name": "Gaslight Coffee Roasters",
+      "neighbourhoodId": "logan-square",
+      "address": "2385 N Milwaukee Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Gaslight is a classic Logan Square neighborhood café with a warm atmosphere and a strong local following. It offers a comfortable environment for working, reading, or meeting with friends while enjoying carefully prepared coffee.",
+      "signatureDrink": "Honey Lavender Latte",
+      "coffeeHighlights": [
+        "House-roasted coffee",
+        "Comfortable seating",
+        "Neighborhood atmosphere",
+        "Great espresso drinks"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "new-wave-coffee",
+      "name": "New Wave Coffee",
+      "neighbourhoodId": "logan-square",
+      "address": "2557 N Milwaukee Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "New Wave Coffee has a relaxed, creative atmosphere that fits perfectly with Logan Square's personality. It is a comfortable place for solo work, journaling, reading, and casual laptop sessions.",
+      "signatureDrink": "Brown Sugar Latte",
+      "coffeeHighlights": [
+        "Independent neighborhood café",
+        "Creative atmosphere",
+        "Good espresso drinks",
+        "Relaxed seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "passion-house-coffee",
+      "name": "Passion House Coffee",
+      "neighbourhoodId": "logan-square",
+      "address": "2631 N Kedzie Blvd, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Passion House is a specialty coffee destination known for excellent roasting and a welcoming café environment. The space is ideal for people who care about coffee quality but still want somewhere comfortable to work.",
+      "signatureDrink": "Honey Cinnamon Latte",
+      "coffeeHighlights": [
+        "Award-winning roasting program",
+        "Excellent pour-over coffee",
+        "Knowledgeable baristas",
+        "Calm atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "dayglow",
+      "name": "Dayglow",
+      "neighbourhoodId": "logan-square",
+      "address": "2608 N California Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Dayglow brings together coffee from some of the world's best roasters in a bright, modern café setting. The stylish interior and excellent drinks make it a great destination for creative work sessions.",
+      "signatureDrink": "Rotating Specialty Latte",
+      "coffeeHighlights": [
+        "Coffee from global roasters",
+        "Beautiful modern design",
+        "Excellent espresso",
+        "Great atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "four-letter-word-coffee",
+      "name": "Four Letter Word Coffee",
+      "neighbourhoodId": "logan-square",
+      "address": "3022 W Diversey Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Four Letter Word Coffee is a small specialty coffee shop focused on quality and craft. While the space is more intimate, it is a great stop for coffee lovers who appreciate a quieter, more intentional café experience.",
+      "signatureDrink": "Seasonal Espresso Drink",
+      "coffeeHighlights": [
+        "Small-batch roasting",
+        "Exceptional espresso",
+        "Coffee-focused experience",
+        "Calm atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "metric-coffee-avondale",
+      "name": "Metric Coffee",
+      "neighbourhoodId": "avondale",
+      "address": "2021 W Fulton St, Chicago, IL 60612",
+      "website": null,
+      "whyGreatForRemoteWork": "Metric is one of Chicago's most respected specialty coffee roasters. The café has a minimalist industrial feel and attracts coffee enthusiasts, creatives, and professionals looking for excellent coffee in a calm environment.",
+      "signatureDrink": "House Latte",
+      "coffeeHighlights": [
+        "Small-batch roasted coffee",
+        "Expert baristas",
+        "Excellent espresso",
+        "Modern industrial space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "magnifico-coffee",
+      "name": "Magnifico Coffee",
+      "neighbourhoodId": "avondale",
+      "address": "3856 N Lincoln Ave, Chicago, IL 60613",
+      "website": null,
+      "whyGreatForRemoteWork": "Magnifico Coffee focuses on high-quality coffee while maintaining a friendly neighborhood feel. It's a good option for remote workers who prefer a quieter café where they can settle in and focus.",
+      "signatureDrink": "Vanilla Cardamom Latte",
+      "coffeeHighlights": [],
+      "overallRating": null
+    },
+    {
+      "id": "cafe-urbano",
+      "name": "Café Urbano",
+      "neighbourhoodId": "avondale",
+      "address": "4872 N Milwaukee Ave, Chicago, IL 60630",
+      "website": null,
+      "whyGreatForRemoteWork": "Café Urbano offers a casual, welcoming neighborhood environment with coffee, food, and plenty of space to work. It's a good choice when you want a comfortable café experience away from downtown crowds.",
+      "signatureDrink": "Horchata Latte",
+      "coffeeHighlights": [
+        "Latin-inspired coffee drinks",
+        "Comfortable seating",
+        "Food options available",
+        "Relaxed atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "bourgeois-pig-cafe",
+      "name": "Bourgeois Pig Café",
+      "neighbourhoodId": "lincoln-park",
+      "address": "738 W Fullerton Ave, Chicago, IL 60614",
+      "website": null,
+      "whyGreatForRemoteWork": "Bourgeois Pig is one of Chicago's classic neighborhood cafés. With its cozy atmosphere, bookshelves, and comfortable seating, it feels more like a café-library hybrid than a traditional coffee shop. It's an excellent spot for reading, writing, studying, and creative work.",
+      "signatureDrink": "Vanilla Bean Latte",
+      "coffeeHighlights": [
+        "Cozy literary atmosphere",
+        "Comfortable seating",
+        "Great for reading and writing",
+        "Neighborhood favorite"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "colectivo-coffee",
+      "name": "Colectivo Coffee",
+      "neighbourhoodId": "lincoln-park",
+      "address": "2532 N Clark St, Chicago, IL 60614",
+      "website": null,
+      "whyGreatForRemoteWork": "Colectivo brings a spacious café environment with excellent coffee, plenty of seating, and a comfortable atmosphere for longer visits. It's a strong choice when you need room to spread out and work.",
+      "signatureDrink": "Iced Mocha",
+      "coffeeHighlights": [
+        "Spacious interior",
+        "Fresh baked goods",
+        "Strong coffee program",
+        "Comfortable seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "paper-tiger-coffee",
+      "name": "Paper Tiger Coffee",
+      "neighbourhoodId": "lincoln-park",
+      "address": "1965 N Damen Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Paper Tiger offers a stylish, modern café experience with a focus on quality coffee and a relaxed environment. It is a good choice for creative work, casual meetings, or a change of scenery.",
+      "signatureDrink": "Brown Sugar Latte",
+      "coffeeHighlights": [
+        "Modern café design",
+        "Specialty espresso drinks",
+        "Comfortable seating",
+        "Creative atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "ludlow-coffee-supply",
+      "name": "Ludlow Coffee Supply",
+      "neighbourhoodId": "lincoln-park",
+      "address": "2955 N Sheffield Ave, Chicago, IL 60657",
+      "website": null,
+      "whyGreatForRemoteWork": "Ludlow Coffee Supply offers a calm neighborhood setting with high-quality coffee and a welcoming environment. It is a good fit for people who prefer a quieter café for focused tasks.",
+      "signatureDrink": "Seasonal Latte",
+      "coffeeHighlights": [
+        "Specialty coffee",
+        "Friendly neighborhood atmosphere",
+        "Quality espresso",
+        "Relaxed setting"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "osmium-coffee-bar",
+      "name": "Osmium Coffee Bar",
+      "neighbourhoodId": "lakeview",
+      "address": "1117 W Belmont Ave, Chicago, IL 60657",
+      "website": null,
+      "whyGreatForRemoteWork": "Osmium Coffee Bar is known for exceptional coffee and a neighborhood atmosphere that attracts coffee enthusiasts, professionals, and creatives. Its cozy environment makes it a strong choice for focused work sessions.",
+      "signatureDrink": "Cortado",
+      "coffeeHighlights": [
+        "Specialty espresso drinks",
+        "Expert baristas",
+        "Coffee-focused experience",
+        "Relaxed neighborhood feel"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "pedestrian-coffee",
+      "name": "Pedestrian Coffee",
+      "neighbourhoodId": "lakeview",
+      "address": "2439 N Lincoln Ave, Chicago, IL 60614",
+      "website": null,
+      "whyGreatForRemoteWork": "Pedestrian Coffee is a neighborhood-focused café with a relaxed pace and excellent coffee. It works well for people who want a comfortable workspace without the crowds of larger cafés.",
+      "signatureDrink": "Brown Sugar Latte",
+      "coffeeHighlights": [
+        "Quality espresso",
+        "Comfortable atmosphere",
+        "Neighborhood café feel",
+        "Seasonal beverages"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "two-hearted-queen",
+      "name": "Two Hearted Queen",
+      "neighbourhoodId": "lakeview",
+      "address": "1201 W Roscoe St, Chicago, IL 60657",
+      "website": null,
+      "whyGreatForRemoteWork": "Two Hearted Queen combines coffee, pastries, and a welcoming neighborhood atmosphere. The café has a cozy feel that makes it ideal for writing, planning, reading, and lighter remote work.",
+      "signatureDrink": "Cardamom Latte",
+      "coffeeHighlights": [
+        "Creative coffee drinks",
+        "Pastries and baked goods",
+        "Comfortable neighborhood setting",
+        "Relaxed atmosphere"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "hexe-coffee-co",
+      "name": "Hexe Coffee Co.",
+      "neighbourhoodId": "roscoe-village",
+      "address": "2000 W Roscoe St, Chicago, IL 60618",
+      "website": null,
+      "whyGreatForRemoteWork": "Hexe Coffee Co. combines specialty coffee with a cozy neighborhood atmosphere. The café is known for quality drinks, comfortable seating, and a welcoming environment that makes it easy to stay awhile and work.",
+      "signatureDrink": "Hexe Latte",
+      "coffeeHighlights": [
+        "Specialty roasted coffee",
+        "Comfortable neighborhood space",
+        "Creative seasonal drinks",
+        "Friendly baristas"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "loba-pastry-coffee",
+      "name": "Loba Pastry + Coffee",
+      "neighbourhoodId": "roscoe-village",
+      "address": "2937 W Armitage Ave, Chicago, IL 60647",
+      "website": null,
+      "whyGreatForRemoteWork": "Loba combines excellent coffee with a strong pastry program, making it a great destination for a slower workday. It is especially appealing if you want to pair a productive café session with a memorable breakfast or afternoon treat.",
+      "signatureDrink": "Seasonal Latte",
+      "coffeeHighlights": [
+        "Excellent pastries",
+        "Specialty coffee",
+        "Beautiful presentation",
+        "Relaxed café environment"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "the-understudy-coffee-and-books",
+      "name": "The Understudy Coffee & Books",
+      "neighbourhoodId": "andersonville",
+      "address": "5531 N Clark St, Chicago, IL 60640",
+      "website": null,
+      "whyGreatForRemoteWork": "The Understudy combines coffee culture with books and community events. Its cozy environment makes it ideal for writers, readers, remote workers, and anyone looking for a thoughtful café experience.",
+      "signatureDrink": "Lavender Latte",
+      "coffeeHighlights": [
+        "Coffee and bookstore combination",
+        "Creative atmosphere",
+        "Comfortable seating",
+        "Great for reading and writing"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "kopi-cafe",
+      "name": "Kopi Café",
+      "neighbourhoodId": "andersonville",
+      "address": "5317 N Clark St, Chicago, IL 60640",
+      "website": null,
+      "whyGreatForRemoteWork": "Kopi Café is a long-standing Andersonville favorite known for its relaxed atmosphere, international coffee influences, and welcoming environment. It's a comfortable place for a slower-paced work session.",
+      "signatureDrink": "Kopi Coffee",
+      "coffeeHighlights": [
+        "European-inspired café",
+        "Unique coffee and tea options",
+        "Comfortable seating",
+        "Neighborhood institution"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "first-sip-cafe",
+      "name": "First Sip Café",
+      "neighbourhoodId": "uptown",
+      "address": "5713 N Broadway, Chicago, IL 60660",
+      "website": null,
+      "whyGreatForRemoteWork": "First Sip Café offers a relaxed neighborhood environment with comfortable seating and a welcoming atmosphere. It’s a good choice for remote workers who prefer a quieter café away from the downtown crowds.",
+      "signatureDrink": "Brown Sugar Latte",
+      "coffeeHighlights": [
+        "Neighborhood café atmosphere",
+        "Specialty espresso drinks",
+        "Comfortable seating",
+        "Friendly service",
+        "Creative specialty drinks",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "haibayo",
+      "name": "Haibayô",
+      "neighbourhoodId": "uptown",
+      "address": "5550 N Broadway, Chicago, IL 60640",
+      "website": null,
+      "whyGreatForRemoteWork": "Haibayô blends coffee culture with Southeast Asian-inspired flavors and a creative café environment. The space offers an interesting change from traditional coffee shops and is a great place for creative work sessions.",
+      "signatureDrink": "Vietnamese Coffee",
+      "coffeeHighlights": [
+        "Southeast Asian-inspired drinks",
+        "Creative menu",
+        "Unique café experience",
+        "Neighborhood atmosphere",
+        "Creative specialty drinks",
+        "Comfortable seating",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "plein-air-cafe",
+      "name": "Plein Air Café",
+      "neighbourhoodId": "hyde-park",
+      "address": "5751 S Woodlawn Ave, Chicago, IL 60637",
+      "website": null,
+      "whyGreatForRemoteWork": "Plein Air Café is one of Hyde Park’s most beloved cafés. Located near the University of Chicago campus, it combines coffee, food, art, and a beautiful atmosphere that makes it especially appealing for writers, students, and remote professionals.",
+      "signatureDrink": "Honey Lavender Latte",
+      "coffeeHighlights": [
+        "Beautiful interior design",
+        "Full café menu",
+        "Great breakfast options",
+        "Creative and academic atmosphere",
+        "Creative specialty drinks",
+        "Comfortable seating",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "philz-coffee",
+      "name": "Philz Coffee",
+      "neighbourhoodId": "hyde-park",
+      "address": "1500 E 53rd St, Chicago, IL 60615",
+      "website": null,
+      "whyGreatForRemoteWork": "Philz offers a relaxed, community-oriented café experience with made-to-order coffee and a comfortable environment. It’s a good choice for remote workers who prefer a casual café where they can spend time working without feeling rushed.",
+      "signatureDrink": "Mint Mojito Iced Coffee",
+      "coffeeHighlights": [
+        "Signature pour-over style coffee",
+        "Friendly baristas",
+        "Comfortable seating",
+        "Relaxed atmosphere",
+        "Creative specialty drinks",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "lvl-up-coffee",
+      "name": "LVL UP Coffee",
+      "neighbourhoodId": "bronzeville",
+      "address": "1450 E 53rd St, Chicago, IL 60615 (Hyde Park area — verify final neighborhood placement when editing)",
+      "website": null,
+      "whyGreatForRemoteWork": "LVL UP Coffee provides a modern café environment with a focus on community, quality drinks, and a comfortable workspace. It’s a good choice for remote workers looking for a welcoming neighborhood café experience.",
+      "signatureDrink": "Signature Latte",
+      "coffeeHighlights": [
+        "Community-focused café",
+        "Modern atmosphere",
+        "Specialty coffee drinks",
+        "Comfortable environment",
+        "Creative specialty drinks",
+        "Comfortable seating",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "sip-and-savor",
+      "name": "Sip & Savor",
+      "neighbourhoodId": "bronzeville",
+      "address": "528 E 43rd St, Chicago, IL 60653",
+      "website": null,
+      "whyGreatForRemoteWork": "Sip & Savor is a beloved neighborhood café known for excellent coffee, food, and community atmosphere. It’s a comfortable option for working remotely while enjoying a café with strong local roots.",
+      "signatureDrink": "Café Mocha",
+      "coffeeHighlights": [
+        "Full food menu",
+        "Community gathering space",
+        "Comfortable seating",
+        "Reliable neighborhood café",
+        "Creative specialty drinks",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "bridgeport-coffeehouse",
+      "name": "Bridgeport Coffeehouse",
+      "neighbourhoodId": "bridgeport",
+      "address": "3100 S Morgan St, Chicago, IL 60608",
+      "website": null,
+      "whyGreatForRemoteWork": "Bridgeport Coffeehouse is a community-focused café with a comfortable atmosphere and a loyal neighborhood following. It’s a good option for people who want a dependable workspace with friendly service and quality coffee.",
+      "signatureDrink": "Honey Cinnamon Latte",
+      "coffeeHighlights": [
+        "Neighborhood café feel",
+        "Comfortable seating",
+        "Friendly atmosphere",
+        "Good coffee and pastries",
+        "Creative specialty drinks",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "bad-owl-coffee",
+      "name": "Bad Owl Coffee",
+      "neighbourhoodId": "bridgeport",
+      "address": "1236 W 18th St, Chicago, IL 60608",
+      "website": null,
+      "whyGreatForRemoteWork": "Bad Owl Coffee offers a comfortable café setting with a creative menu and a welcoming environment. It’s a great place for a productive afternoon while exploring one of Chicago’s most interesting neighborhoods.",
+      "signatureDrink": "Butterbeer Latte",
+      "coffeeHighlights": [
+        "Creative specialty drinks",
+        "Comfortable seating",
+        "Fun atmosphere",
+        "Neighborhood-friendly space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "overflow-coffee",
+      "name": "Overflow Coffee",
+      "neighbourhoodId": "south-loop",
+      "address": "1550 S State St, Chicago, IL 60605",
+      "website": null,
+      "whyGreatForRemoteWork": "Overflow Coffee is designed around community and connection. With comfortable seating, quality drinks, and a welcoming atmosphere, it works well for remote workers looking for a reliable neighborhood workspace.",
+      "signatureDrink": "Honey Lavender Latte",
+      "coffeeHighlights": [
+        "Community-oriented café",
+        "Comfortable seating",
+        "Specialty drinks",
+        "Friendly environment"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "spoke-and-bird",
+      "name": "Spoke & Bird",
+      "neighbourhoodId": "south-loop",
+      "address": "205 E 18th St, Chicago, IL 60616",
+      "website": null,
+      "whyGreatForRemoteWork": "Spoke & Bird combines a café atmosphere with a neighborhood restaurant feel. It is a strong choice for remote workers who want coffee, a full food menu, and a comfortable place to stay for several hours.",
+      "signatureDrink": "Seasonal Latte",
+      "coffeeHighlights": [
+        "Full café menu",
+        "Breakfast and lunch options",
+        "Spacious environment",
+        "Comfortable seating"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "jumping-bean-cafe",
+      "name": "Jumping Bean Café",
+      "neighbourhoodId": "pilsen",
+      "address": "1439 W 18th St, Chicago, IL 60608",
+      "website": null,
+      "whyGreatForRemoteWork": "Jumping Bean Café has been a Pilsen neighborhood institution for decades. It offers a relaxed atmosphere where locals gather for coffee, conversation, and community. It is a great option for slower-paced work sessions and creative thinking.",
+      "signatureDrink": "Mexican Hot Chocolate",
+      "coffeeHighlights": [
+        "Long-running neighborhood café",
+        "Latin-inspired drinks",
+        "Comfortable atmosphere",
+        "Community-focused space"
+      ],
+      "overallRating": null
+    },
+    {
+      "id": "cafe-jumping-bean",
+      "name": "Café Jumping Bean",
+      "neighbourhoodId": "pilsen",
+      "address": "1439 W 18th St, Chicago, IL 60608",
+      "website": null,
+      "whyGreatForRemoteWork": "Café Jumping Bean is one of Pilsen’s most recognizable cafés and has long been a gathering place for artists, neighbors, students, and visitors. Its relaxed environment makes it a good choice for casual laptop work and creative projects.",
+      "signatureDrink": "Café de Olla",
+      "coffeeHighlights": [
+        "Historic Pilsen café",
+        "Mexican-inspired coffee drinks",
+        "Community atmosphere",
+        "Great neighborhood stop"
+      ],
+      "overallRating": null
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {AppHeader, AppShell, TabBar} from 'bobuttons';
 
 import App from '../App';
 import PlaceholderView from '../src/views/PlaceholderView';
+import PlacesView from '../src/views/PlacesView';
 import {MAP_VIEW_ID, SIDEBAR_ENTRIES} from '../src/shell/navEntries';
 
 jest.mock('react-native-webview', () => {
@@ -101,15 +102,26 @@ describe('shell', () => {
     expect(root.findAllByType(PlaceholderView)).toHaveLength(0);
   });
 
-  it.each(SIDEBAR_ENTRIES.map(entry => [entry.id] as const))(
-    'selecting %s shows its placeholder instead of the map',
-    id => {
-      const root = renderApp();
-      pressTab(root, id);
+  it.each(
+    SIDEBAR_ENTRIES.filter(entry => entry.id !== 'places').map(
+      entry => [entry.id] as const,
+    ),
+  )('selecting %s shows its placeholder instead of the map', id => {
+    const root = renderApp();
+    pressTab(root, id);
 
-      expect(root.findByType(PlaceholderView).props.entryId).toBe(id);
-      expect(root.findByType(TabBar).props.current).toBe(id);
-      expect(() => root.findByType(WebView)).toThrow();
-    },
-  );
+    expect(root.findByType(PlaceholderView).props.entryId).toBe(id);
+    expect(root.findByType(TabBar).props.current).toBe(id);
+    expect(() => root.findByType(WebView)).toThrow();
+  });
+
+  it('selecting places shows the real Places view instead of the map (CUPBOARD-5)', () => {
+    const root = renderApp();
+    pressTab(root, 'places');
+
+    expect(root.findByType(PlacesView)).toBeTruthy();
+    expect(root.findAllByType(PlaceholderView)).toHaveLength(0);
+    expect(root.findByType(TabBar).props.current).toBe('places');
+    expect(() => root.findByType(WebView)).toThrow();
+  });
 });

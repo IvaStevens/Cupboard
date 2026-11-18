@@ -131,7 +131,17 @@ export interface PolygonLayerStyle {
   fillOpacity: number;
 }
 
-/** One style for the neighbourhood polygons - a light, low-opacity fill so it reads as a backdrop under the CTA layers. */
+/**
+ * The DEFAULT style for a neighbourhood polygon - a light, low-opacity
+ * fill so it reads as a backdrop under the CTA layers. CUPBOARD-5: this
+ * is now specifically the fallback for the 81 `pri_neigh` areas with no
+ * passport neighbourhood; the 17 areas connected to one are coloured per
+ * the passport's own colour pair instead (see
+ * src/map/neighbourhoodColours.ts and src/places/passportData.ts). The
+ * passport document's own `defaultBg`/`defaultFrame` pair
+ * (docs/passport.tex:34-35) is deliberately NOT substituted here - this
+ * value stays byte-identical to CUPBOARD-4's.
+ */
 export const NEIGHBOURHOOD_STYLE: PolygonLayerStyle = {
   color: '#8A8A8A',
   weight: 1,

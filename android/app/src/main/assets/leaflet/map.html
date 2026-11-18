@@ -243,11 +243,26 @@
               });
             }
             if (id === 'chicago-neighbourhoods') {
+              // CUPBOARD-5: per-feature colouring, keyed on the stable
+              // polygon key `pri_neigh` against config.neighbourhoodStyleByArea
+              // (built by src/map/neighbourhoodColours.ts from the 17
+              // passport neighbourhoods' colour pairs), falling back to
+              // config.neighbourhoodStyle (CUPBOARD-4's default) for
+              // every area with no passport neighbourhood. A missing or
+              // empty dictionary would otherwise silently grey all 98
+              // polygons with no visible error, so that case posts a
+              // diagnostic once rather than failing silently.
+              var styleByArea = config.neighbourhoodStyleByArea;
+              if (!styleByArea || Object.keys(styleByArea).length === 0) {
+                post('chicago-neighbourhoods: neighbourhoodStyleByArea is missing or empty - every polygon will use the default style');
+              }
               return L.geoJSON(geojson, {
                 interactive: false,
                 pane: config.neighbourhoodPane.name,
-                style: function () {
-                  return Object.assign({}, config.neighbourhoodStyle, {interactive: false});
+                style: function (feature) {
+                  var area = feature && feature.properties && feature.properties.pri_neigh;
+                  var style = (area && styleByArea && styleByArea[area]) || config.neighbourhoodStyle;
+                  return Object.assign({}, style, {interactive: false});
                 },
               });
             }
