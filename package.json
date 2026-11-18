@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "convert:map-data": "node tools/convertMapData.js \"Chicago Data Portal\"",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",

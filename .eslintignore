@@ -1,0 +1,16 @@
+# ESLint 8 does not read .gitignore, so without this file `npm run lint`
+# walks android/app/build/** (created by any Gradle build, including the
+# AC26 debug build this ticket also requires), CTA/** and
+# 'Chicago Data Portal/**' (the gitignored raw GIS source folders, which
+# are not JS/TS anyway) and fails with hundreds of thousands of
+# unrelated problems. Also excludes the generated map-data assets, which
+# are produced JSON wrapped in one line of JS (see
+# tools/convertMapData.js) - not hand-written source to lint, and large
+# enough (~4.3 MB total) that lint ing them would be pure overhead.
+
+android/app/build/
+CTA/
+Chicago Data Portal/
+android/app/src/main/assets/mapdata/
+node_modules/
+vendor/

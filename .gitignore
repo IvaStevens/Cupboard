@@ -76,3 +76,7 @@ yarn-error.log
 
 # Local workflow docs (architect context, study guides)
 /docs/
+
+# Raw GIS source data (may be copied into app assets later)
+/CTA/
+/Chicago Data Portal/

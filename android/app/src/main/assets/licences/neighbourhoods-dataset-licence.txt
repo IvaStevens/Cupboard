@@ -1,0 +1,11 @@
+Neighborhoods_2012b dataset licence record
+
+Values read from the saved landing page 'Chicago Data Portal/Neighborhoods_2012b _ City of Chicago _ Data Portal.html' (not committed - 4.9 MB plus its _files/ directory; this short record is committed instead, and no City of Chicago logo is shipped):
+
+  dataset:         Neighborhoods_2012b
+  attribution:      City of Chicago
+  attributionLink:  http://www.cityofchicago.org
+  licence:          See Terms of Use
+  licenseId:        SEE_TERMS_OF_USE
+
+The landing page links to no Terms of Use page, so the authoritative Data Portal terms document is not on disk and fetching it is out of scope for this ticket. The City of Chicago TIF disclaimer committed alongside this file as chicago-terms-of-use.txt is the only City terms text shipped; its USE OF DATA clause's required derivative-use disclaimer is reproduced in this app's licences view and in README.md's Licences section.
