@@ -5,7 +5,6 @@
   "scripts": {
     "android": "react-native run-android",
     "convert:map-data": "node tools/convertMapData.js \"Chicago Data Portal\"",
-    "convert:licences": "node tools/convertLicences.js .",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",

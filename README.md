@@ -94,11 +94,11 @@ npm run typecheck
 - `android/app/src/main/assets/leaflet/` - `map.html` and the vendored Leaflet.
 - `android/app/src/main/assets/mapdata/` - the five converted map layers
   (generated; see "Map data" below - never edit these by hand).
-- `android/app/src/main/assets/licences/` - the sanitised CTA agreement and
-  City of Chicago terms shipped with the app (generated; see "Map data"
-  below).
-- `tools/` - the developer-run conversion scripts that produce the above
-  two asset directories (see "Map data" below).
+- `android/app/src/main/assets/licences/` - the CTA agreement and City of
+  Chicago terms shipped with the app, copied once from the source folders
+  (the CTA agreement re-encoded to UTF-8 with its logo images removed).
+- `tools/` - the developer-run script that produces the map layers (see
+  "Map data" below).
 
 ### Troubleshooting the map
 
@@ -158,11 +158,10 @@ after refreshing the source folder:
 
 ```
 npm run convert:map-data
-npm run convert:licences
 ```
 
-Neither script is run by Gradle or Metro - re-run them by hand and commit
-the result.
+The script is not run by Gradle or Metro - re-run it by hand and commit the
+result. The licence texts are one-time copies and have no script.
 
 **Delivery mechanism.** `MapScreen.tsx`'s WebView deliberately leaves
 `allowFileAccess`, `allowFileAccessFromFileURLs` and
