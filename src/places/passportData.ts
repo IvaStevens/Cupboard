@@ -1,6 +1,6 @@
 /**
  * Hand-written typed access layer over the committed, generated-once
- * data file `./passportData.json` (converted from the gitignored
+ * data file `./passportSeed.json` (converted from the gitignored
  * `docs/passport.tex` - see README.md's "Places data" section). That
  * JSON file is the source of truth from here on: CUPBOARD-5 generated it
  * once with a throwaway script and the author may hand-edit it directly
@@ -21,7 +21,7 @@
  * `PassportPlace.neighbourhoodId` and `PassportNeighbourhoodParent.id`
  * reference other records by id; nothing downstream may key a record by
  * display string or position. Because ids are a pure function of names,
- * a rename in `passportData.json` shows up as an id change in
+ * a rename in `passportSeed.json` shows up as an id change in
  * `git diff` - CUPBOARD-6 must treat that as a data migration, not a
  * no-op.
  *
@@ -42,7 +42,10 @@
  * @format
  */
 
-import passportDataJson from './passportData.json';
+// The JSON is deliberately NOT named passportData.json: Metro resolves an
+// extensionless './passportData' import to .json before .ts, which would hand
+// every importer the raw JSON instead of this module.
+import passportDataJson from './passportSeed.json';
 
 export type RgbTriplet = readonly [number, number, number];
 

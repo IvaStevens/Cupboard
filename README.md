@@ -97,7 +97,7 @@ npm run typecheck
   "Places data" below), the WebView screen, and the init script.
 - `src/shell/` - the side panel's main selector data and `LayerPicker.tsx`,
   the layer-toggle sub-selector.
-- `src/places/` - the Places tab's data: `passportData.json` (generated
+- `src/places/` - the Places tab's data: `passportSeed.json` (generated
   once, see "Places data" below) and `passportData.ts`, the typed access
   layer the Places views and `src/map/neighbourhoodColours.ts` both
   import.
@@ -117,7 +117,7 @@ npm run typecheck
 
 ### Places data
 
-`src/places/passportData.json` (50 coffee shops across 17 neighbourhoods)
+`src/places/passportSeed.json` (50 coffee shops across 17 neighbourhoods)
 was converted **once** from a gitignored source document,
 `docs/passport.tex` (the author's own "Chicago Coffee Passport", not
 committed - see `.gitignore`'s "Local workflow docs" entry), using a
@@ -126,7 +126,7 @@ under `tools/`. Unlike the map layers above, **there is no re-runnable
 converter for this data and none should be added**: the parsing was a
 one-time job, and the committed JSON file is the product, not a
 generated artifact that gets regenerated and recommitted. From here on,
-`src/places/passportData.json` is the source of truth - edit it directly
+`src/places/passportSeed.json` is the source of truth - edit it directly
 (the author plans to re-match some shops to neighbourhoods by hand) and
 commit the result like any other source file.
 
@@ -142,9 +142,9 @@ slug derived from its name (never from array position), and a place
 references its neighbourhood by id. Because ids are name-derived, **a
 future id change is a data migration, not a cosmetic rename**: a planned
 on-device database (an upcoming ticket) will use these same ids as
-primary keys, so if a hand-edit to `passportData.json` ever changes an
+primary keys, so if a hand-edit to `passportSeed.json` ever changes an
 id (visible as an id diff, not just a text diff, in
-`git diff src/places/passportData.json`), any already-stored rows keyed
+`git diff src/places/passportSeed.json`), any already-stored rows keyed
 on the old id need to be migrated rather than silently orphaned.
 
 **What is - and is not - in this file.** The 50 shops' blank `website`

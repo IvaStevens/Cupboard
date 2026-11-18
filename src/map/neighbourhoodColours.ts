@@ -6,7 +6,7 @@
  *
  * `import type` only for the passport data types (src/places/passportData),
  * so importing this module - or its test - never loads the committed
- * passportData.json at runtime; callers pass the neighbourhood list in.
+ * passportSeed.json at runtime; callers pass the neighbourhood list in.
  *
  * PRECEDENCE (AC "MAP - precedence"): resolved by KIND, never array
  * position. A neighbourhood with no parent ("parentless") always wins
